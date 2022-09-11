@@ -1,0 +1,36 @@
+{
+  "name": "reactpractice",
+  "version": "1.0.0",
+  "description": "reactPractic",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -w server -e js,graphql server/server.js",
+    "compile": "babel src --out-dir public",
+    "watch": "babel  src -d public -w --verbose",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emmanuel-okwara/ReactPractice.git"
+  },
+  "author": "emmanuel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emmanuel-okwara/ReactPractice/issues"
+  },
+  "homepage": "https://github.com/emmanuel-okwara/ReactPractice#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.25.4",
+    "express": "^4.18.1",
+    "graphql": "^0.13.2",
+    "mongodb": "^3.7.3",
+    "nodemon": "^2.0.16",
+    "npm": "^8.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.12",
+    "@babel/preset-env": "^7.17.12",
+    "@babel/preset-react": "^7.17.12"
+  }
+}

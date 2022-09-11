@@ -1,0 +1,68 @@
+>>>>>>>>>>>>> Introduction <<<<<<<<<<<<<
+
+    Web application development is not what it used to be, even a few years back. Today ,
+    there are so many options, and the uninitiated are ofen confused about what's good for them. There are many choices;
+    not just the broad stack
+
+    >>>>>> What's MERN <<<<<<<
+
+        -> Any web application is built using multiple technologies. The combinations of these technologies is called a stack,
+            popularized by the LAMP stack, which is an acronym of Linux, Apache, MySQL, PHP, which are all open source software.
+            As web development matured and their interactivity came to the fore, Single Page Applications (SPAs)
+            became more popular. An SPA is a web application paradigm that avoids fetching the contents of an entire
+            web page fromt eh server to display new contents.
+
+    >>>>>> MERN Components <<<<<<<
+
+        -> React 
+            React anchors the MERN Stack. In some sense, this is the defining component of the MERN stack.
+            React is an open source JavaScript maintained by Facebook that can be used for creating views,
+            rendered in HTML. React is not a framework, it is a library.
+
+    >>>>> Node.js <<<<<<
+
+        -> Simply put, Node.js is JavaScript outside of a browser. The creators of Node.js just took Chrome's V8
+        JavaScript engine and made it run independently as a JavaScript runtime. If you are familiar with the JavaScript
+        runtime that runs Java programs, you can easily relate to the JavaScript runtime: the Node.js runtime runs JavaScript programs.
+
+    >>>>> Node.js Modules <<<<<<
+     
+        -> In a browser, you can load multiple JavaScript files , but you need an HTML page to do all that.
+        You cannot refer another JavaScript file from one JavaScript file. But for Node.js , there is no HTML page that starts it all.
+        In the absense of the enclosing HTML page, Node.js uses it own module system based on CommonJS to put together multiple JavaScript files.
+
+        Modules are like libraries. You can include the functionality  of another JavaScript file by using the require keyword. You can therefore
+         split your codeinto files or modules for the sake of better organization and load them using require. 
+
+
+    >>>>>> Node.js is Event Driven <<<<<<<
+
+        -> Node.js has an asynchronous, even driven , non-blocking input/output(I/O) model, as opposed to using threads to achieve multi-tasking.
+        Most other languages depend on threads to do things simultaneously. But in fact, there is no such thing
+        as simultaneous when it comes to a single processor running your code.
+
+    >>>>> Express <<<<<<<
+
+        -> Node.js is just a runtime enviroment that can run JavaScript. To write a full-fledged web server by hand on Node.js directly is not easy,
+        neither is it neccessary. Express is a framework taht simplifies the task of writing the server code.
+        The Express framework lets you define routes, specifications of what to do when an HTTP request matching a certain pattern arrives.
+        The matching specification is regular expression (regex) based and is very flexible, like most other web 
+        application frameworks.
+
+
+
+>>>>>>>>>>>>>>>> CHAPTERF 2 <<<<<<<<<<<<<<<<<<<
+
+        >>>>> Hello World <<<<<<<<
+
+            >>> Server-Less Hello World <<<
+
+        
+
+        >>>>>> JSX <<<<<<
+
+            -> The simple element that we created in the previous section was easy to write using React.createElement() calls.
+                But imagine writing a deeply nested hierarchy of elements and components: it can get pretty complex.
+                Also , the actual DOM can't be easily visulized when using the function calls as it can be visulized if it were plain HTMl.
+                To address this, React has a markup language called JSX, which stands for JavaScript XML. JSX looks
+                very much like HTMl , but there are some differences. So instead of the React.createElement() calls, JSX
