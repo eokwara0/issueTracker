@@ -17,16 +17,30 @@ const url = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTim
 
 let db ;
 
+
+/**
+ * @Defining GrapQL Schema for our GraphQLScalar Type ( GraphQLDate )
+ */
 const GraphQLDate = new GraphQLScalarType({
-    name : 'GraphQLDate',
-    description: 'A Data() type in GraphQL as a scalar',
+    name : 'GraphQLDate',           // Scalar definition
+    description: 'A Data() type in GraphQL as a scalar', // Scalar description
+
+    /**
+     * 
+     * @param {Incoming issue value } value 
+     * @returns  Date object if the values is a valid data string else returns undefined 
+     */
     parseValue(value){
-        // return new Date(value);
         const dateValue = new Date(value);
         return isNaN(dateValue) ? undefined : dateValue;
     },
+
+    /**
+     * 
+     * @param {Incoming Data value} ast 
+     * @returns  Date object else undefined 
+     */
     parseLiteral(ast){
-        // return (ast.kind == Kind.STRING) ? new Date(ast.value) : undefined;
         if(ast.kind == Kind.STRING){
             const value = new Date(ast.value);
             return isNaN(value) ? undefined : value;
@@ -52,6 +66,11 @@ const issuesDB = [
 ];
 
 
+/**
+ * 
+ * @param {issue to be validated } issue 
+ * Validates issue request coming from the client .
+ */
 function validateIssue(issue){
     const errors = [];
     if (issue.title.length < 3){
@@ -80,9 +99,13 @@ const resolvers = {
     },
     GraphQLDate,
 };
+
+
 function setAboutMessage(_,{ message }) {
     return aboutMessage= message ;
 }
+
+
 async function issueList(){
     const issues = await db.collection('issues').find({}).toArray();
     // console.log(issues)
@@ -105,9 +128,18 @@ function issueAdd(_,{ issue }){
 
 }
 
+/**
+ * @Server creating an express app
+ * and adding middleware for serving up static files
+ */
 const app = express();
 app.use(express.static('public')) ;
 
+
+/**
+ * Creating ApolloServer for Local API Server
+ * @Initializing our express server 
+ */
 const server = new ApolloServer({ 
     typeDefs:fs.readFileSync(__dirname+"\\Issue.graphql",'utf-8'),
     resolvers,
@@ -117,20 +149,17 @@ const server = new ApolloServer({
     }
 },(async function (){
     try{
-        await connectToDB();
-        app.listen(3000,() => {console.log('App started on port 3000');})
+        await connectToDB();                // connecting to mongoDB localDataBase system
+        app.listen(3000,() => {console.log('App started on port 3000');}) // Starting our express server
     }catch(err){
         console.log('ERROR:',err);
     }
 })());
 
+
+/**
+ * applying the GraphQL middleware configuration
+ */
 server.applyMiddleware({app,path:'/graph'});
 
-
-// -----------------------------
-
-
-// app.listen(3000, () => {
-//     console.log("App started on port 3000");
-// });
 
