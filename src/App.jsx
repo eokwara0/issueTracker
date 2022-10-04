@@ -120,14 +120,6 @@ class IssueList extends React.Component{
                 created effort due
             }
         }`;
-        // const response = await fetch('/graph',{
-        //     method : 'POST',
-        //     headers: {'Content-Type': 'application/json'},
-        //     body: JSON.stringify({query})
-        // });
-
-        // const body = await response.text();
-        // const result = JSON.parse(body,jsonDateReviver);
         const data = await this.graphQLFetch(query);
         if(data){
             this.setState({issues: data.issueList});

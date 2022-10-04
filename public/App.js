@@ -230,14 +230,7 @@ var IssueList = /*#__PURE__*/function (_React$Component3) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                query = "query{\n            issueList{\n                id title status owner\n                created effort due\n            }\n        }"; // const response = await fetch('/graph',{
-                //     method : 'POST',
-                //     headers: {'Content-Type': 'application/json'},
-                //     body: JSON.stringify({query})
-                // });
-                // const body = await response.text();
-                // const result = JSON.parse(body,jsonDateReviver);
-
+                query = "query{\n            issueList{\n                id title status owner\n                created effort due\n            }\n        }";
                 _context2.next = 3;
                 return this.graphQLFetch(query);
 
