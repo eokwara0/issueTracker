@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config() 
 
-
-const url = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4';
+const url = process.env.DB_URL || 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4';
 
 // const url = 'mongodb://localhost/';
 // Atlas Url -- replace UUU with user, PPP with password , XXX with hostname

@@ -4,17 +4,26 @@ const {ApolloServer , UserInputError} = require('apollo-server-express');
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const { MongoClient }  = require('mongodb');
-const { log } = require('console');
+const { log  , table } = require('console');
+require( 'dotenv').config()
+
 
 /**
  * mongodb url localhost >> 
  */
-const url = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4';
- 
+const url = process.env.DB_URL || 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4';
+
 // Atlas URL - replace UUU with user, PPP with password, XXX with hostname
 // const url = 'mongodb+srv://UUU:PPP@cluster0-XXX.mongodb.net/issuetracker?retryWrites=true';
 // mLab URL - replace UUU with user, PPP with password, XXX with hostname
 // const url = 'mongodb://UUU:PPP@XXX.mlab.com:33533/issuetracker';
+
+
+/**
+ * api port number
+ * @type {number}
+ */
+const port = process.env.API_SERVER_PORT || 3000 
 
 let db ;
 
@@ -122,7 +131,7 @@ async function issueAdd(_,{ issue }){
 const app = express();
 
 // creating middleware for serving static files
-app.use(express.static('public')) ;
+// app.use(express.static('public')) ;
 
 
 /**
@@ -130,7 +139,7 @@ app.use(express.static('public')) ;
  * @Initializing our express server 
  */
 const server = new ApolloServer({ 
-    typeDefs:fs.readFileSync(__dirname+"\\Issue.graphql",'utf-8'),
+    typeDefs:fs.readFileSync("./Issue.graphql",'utf-8'),
     resolvers,
     formatError : error => {
         console.error(error);
@@ -139,9 +148,9 @@ const server = new ApolloServer({
 },(async function (){
     try{
         await connectToDB();                // connecting to mongoDB localDataBase system
-        app.listen(3000,() => {console.log('App started on port 3000');}) // Starting our express server
+        app.listen(port,() => {log(`API Server started on port ${port}`);}) // Starting our express server
     }catch(err){
-        console.log('ERROR:',err);
+        log('ERROR:',err);
     }
 })());
 
@@ -149,7 +158,7 @@ const server = new ApolloServer({
 /**
  * applying the GraphQL middleware configuration
  */
-server.applyMiddleware({app,path:'/graph'});
+server.applyMiddleware({app,path:'/graphql'});
 
 
 async function getNextSequence( name ){

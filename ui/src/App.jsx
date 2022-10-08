@@ -1,4 +1,6 @@
 
+
+
 class IssueFilter extends React.Component{
     render(){
         return (
@@ -91,7 +93,7 @@ class IssueList extends React.Component{
     }
     async graphQLFetch(query,variables = {}){
         try{
-            const response = await fetch('/graph',{
+            const response = await fetch('http://localhost:3000/graphql',{
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({query,variables})
@@ -106,6 +108,7 @@ class IssueList extends React.Component{
                 }else{
                     alert(`${error.extensinos.code}:${error.message}`);
                 }
+
             }
             return result.data
         }catch(e){
