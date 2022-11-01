@@ -171,7 +171,7 @@ var IssueList = /*#__PURE__*/function (_React$Component3) {
                 variables = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
                 _context.prev = 1;
                 _context.next = 4;
-                return fetch('http://localhost:3000/graphql', {
+                return fetch(window.ENV.UI_API_ENDPOINT, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -310,4 +310,5 @@ var IssueList = /*#__PURE__*/function (_React$Component3) {
 }(React.Component);
 
 var element = /*#__PURE__*/React.createElement(IssueList, null);
-ReactDOM.render(element, document.getElementById('content'));
+var root = ReactDOM.createRoot(document.getElementById('content'));
+root.render(element);

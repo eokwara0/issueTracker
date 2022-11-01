@@ -93,7 +93,7 @@ class IssueList extends React.Component{
     }
     async graphQLFetch(query,variables = {}){
         try{
-            const response = await fetch('http://localhost:3000/graphql',{
+            const response = await fetch(window.ENV.UI_API_ENDPOINT,{
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({query,variables})
@@ -159,5 +159,5 @@ class IssueList extends React.Component{
 
 
 const element = <IssueList/>;
-
-ReactDOM.render(element, document.getElementById('content'))
+const root = ReactDOM.createRoot( document.getElementById('content') )
+root.render( element )
