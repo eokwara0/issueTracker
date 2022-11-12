@@ -1,10 +1,16 @@
+/* eslint-disable func-names */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-console */
+
+
 const express = require('express');
 const fs = require('fs');
 const { ApolloServer, UserInputError } = require('apollo-server-express');
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const { MongoClient } = require('mongodb');
-const { log, table } = require('console');
+const { log } = require('console');
 require('dotenv').config();
 
 
@@ -35,9 +41,11 @@ let db;
  * @Defining GrapQL Schema for our GraphQLScalar Type ( GraphQLDate )
  */
 const GraphQLDate = new GraphQLScalarType({
+
   // Scalar definition
-  name: 'GraphQLDate',
   // Scalar description
+
+  name: 'GraphQLDate',
   description: 'A Data() type in GraphQL as a scalar',
 
   /**
@@ -45,22 +53,24 @@ const GraphQLDate = new GraphQLScalarType({
      * @param {Incoming issue value } value
      * @returns  Date object if the values is a valid data string else returns undefined
      */
+
   parseValue(value) {
     const dateValue = new Date(value);
+    // eslint-disable-next-line no-restricted-globals
     return isNaN(dateValue) ? undefined : dateValue;
   },
 
-  /**
-     *
-     * @param {Incoming Data value} ast
-     * @returns  Date object else undefined
-     */
+
+  // processes Incoming value
   parseLiteral(ast) {
-    if (ast.kind == Kind.STRING) {
+    if (ast.kind === Kind.STRING) {
       const value = new Date(ast.value);
       return isNaN(value) ? undefined : value;
     }
+    return new Date();
   },
+
+  // serializes the value
   serialize(value) {
     return value.toISOString();
   },
@@ -72,20 +82,19 @@ const GraphQLDate = new GraphQLScalarType({
  * @param {issue to be validated } issue
  * Validates issue request coming from the client .
  */
+
 function validateIssue(issue) {
   // error list
   const errors = [];
 
   // validates the length of the issue title
-  // if it's less than 3 add the error message to the list of errors
   if (issue.title.length < 3) {
     errors.push('Field "title" must be at least 3 characters long.');
   }
 
   // validates if the issue has been
   // assigned and if has an owner
-  // pushes the error message into the list of errors
-  if (issue.status == 'Assinged' && !issue.owner) {
+  if (issue.status === 'Assinged' && !issue.owner) {
     errors.push('Field "owner" is required when status is "Assinged"');
   }
   // checks if there are any errors
@@ -99,6 +108,41 @@ function validateIssue(issue) {
 // aboutMessage variable
 let aboutMessage = 'Issue Tracker API v1.0';
 
+// about message mutation resolver
+function setAboutMessage(_, { message }) {
+  aboutMessage = message;
+  return aboutMessage;
+}
+
+async function issueList() {
+  const issues = await db.collection('issues').find({}).toArray();
+  // issuesDB = issues;
+  return issues;
+}
+
+// returns back the number of sequences in the database and add 1
+async function getNextSequence(name) {
+  const data = await db.collection('issues').count();
+  const incr = data + 1;
+  const result = await db.collection('counters').findOneAndUpdate(
+    { _id: name }, { $set: { current: incr } },
+    { returnOriginal: false },
+  );
+  return result.value.current;
+}
+
+
+// resolver for issueAdd mutation
+async function issueAdd(_, { issue }) {
+  validateIssue(issue);
+  issue.created = new Date();
+  issue.id = await getNextSequence('issues');
+  const result = await db.collection('issues').insertOne(issue);
+  const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
+  return savedIssue;
+}
+
+
 const resolvers = {
   Query: {
     about: () => aboutMessage,
@@ -111,26 +155,6 @@ const resolvers = {
   GraphQLDate,
 };
 
-
-function setAboutMessage(_, { message }) {
-  return aboutMessage = message;
-}
-
-
-async function issueList() {
-  const issues = await db.collection('issues').find({}).toArray();
-  issuesDB = issues;
-  return issues;
-}
-
-async function issueAdd(_, { issue }) {
-  validateIssue(issue);
-  issue.created = new Date();
-  issue.id = await getNextSequence('issues');
-  const result = await db.collection('issues').insertOne(issue);
-  const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
-  return savedIssue;
-}
 
 async function connectToDB() {
   const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -180,14 +204,3 @@ const server = new ApolloServer({
 // server cors implementation with this cors is disabled
 // server.applyMiddleware({app,path:'/graphql' , cors:enableCors });
 server.applyMiddleware({ app, path: '/graphql' });
-
-
-async function getNextSequence(name) {
-  const data = await db.collection('issues').count();
-  const incr = data + 1;
-  const result = await db.collection('counters').findOneAndUpdate(
-    { _id: name }, { $set: { current: incr } },
-    { returnOriginal: false },
-  );
-  return result.value.current;
-}
