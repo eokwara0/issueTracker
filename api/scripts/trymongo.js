@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
@@ -15,32 +17,32 @@ function testWithCallbacks(callback) {
   console.log('\n---- testWithCallbacks ----');
 
   const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
-  client.connect((err, res) => {
+  client.connect((err) => {
     if (err) {
       callback(err);
       return;
     }
-    console.log('connected to MongoDB');
+    console.log('connected to MongoDB', url);
     const db = client.db('issuetracker');
     const collection = db.collection('employees');
 
     const employee = { id: 1, name: 'A. Callback ', age: 23 };
-    collection.insertOne(employee, (err, result) => {
-      if (err) {
+    collection.insertOne(employee, (finderr, result) => {
+      if (finderr) {
         client.close();
-        callback(err);
+        callback(finderr);
         return;
       }
       console.log('Result of insert:\n', result.insertedId);
-      collection.find({ _id: result.insertedId }).toArray((err, docs) => {
-        if (err) {
+      collection.find({ _id: result.insertedId }).toArray((err_, docs) => {
+        if (err_) {
           client.close();
-          callback(err);
+          callback(err_);
           return;
         }
         console.log('Result of find:\n', docs);
         client.close();
-        callback(err);
+        callback(err_);
       });
     });
   });
@@ -81,7 +83,6 @@ testWithCallbacks((err) => {
 
 // const { MongoClient , ServerApiVersion} = require('mongodb');
 // const uri = "mongodb+srv://eokwara:04041975Ee-@appenvironment.mqehcaq.mongodb.net/?retryWrites=true&w=majority";
-
 // const client = new MongoClient(uri,{useNewUrlParser:true, useUnifiedTopology:true,serverApi:ServerApiVersion.v1});
 // client.connect(async (err, res) => {
 //     if (err){

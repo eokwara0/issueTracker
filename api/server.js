@@ -1,9 +1,4 @@
-/* eslint-disable func-names */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-restricted-globals */
 /* eslint-disable no-console */
-
-
 const express = require('express');
 const fs = require('fs');
 const { ApolloServer, UserInputError } = require('apollo-server-express');
@@ -56,8 +51,7 @@ const GraphQLDate = new GraphQLScalarType({
 
   parseValue(value) {
     const dateValue = new Date(value);
-    // eslint-disable-next-line no-restricted-globals
-    return isNaN(dateValue) ? undefined : dateValue;
+    return Number.isNaN(dateValue.getTime()) ? undefined : dateValue;
   },
 
 
@@ -65,9 +59,9 @@ const GraphQLDate = new GraphQLScalarType({
   parseLiteral(ast) {
     if (ast.kind === Kind.STRING) {
       const value = new Date(ast.value);
-      return isNaN(value) ? undefined : value;
+      return Number.isNaN(value.getTime()) ? undefined : value;
     }
-    return new Date();
+    return undefined;
   },
 
   // serializes the value
@@ -105,15 +99,17 @@ function validateIssue(issue) {
 }
 
 
-// aboutMessage variable
+/** About message */
 let aboutMessage = 'Issue Tracker API v1.0';
 
-// about message mutation resolver
+/** About message mutation resolver  */
 function setAboutMessage(_, { message }) {
   aboutMessage = message;
   return aboutMessage;
 }
 
+/** IssueList resolver */
+/** query's the database and returns a list of issues  */
 async function issueList() {
   const issues = await db.collection('issues').find({}).toArray();
   // issuesDB = issues;
@@ -134,12 +130,21 @@ async function getNextSequence(name) {
 
 // resolver for issueAdd mutation
 async function issueAdd(_, { issue }) {
+
+  /** Validate issue */
   validateIssue(issue);
-  issue.created = new Date();
-  issue.id = await getNextSequence('issues');
-  const result = await db.collection('issues').insertOne(issue);
+
+  /** Creates a copy of the original issue */
+  /** modifies the issue  */
+  const newIssue = Object.assign({}, issue);
+  newIssue.created = new Date();
+  newIssue.id = await getNextSequence('issues');
+
+  /** inserts the issue inside of the database if valid issue */
+  const result = await db.collection('issues').insertOne(newIssue);
   const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
   return savedIssue;
+
 }
 
 
@@ -173,9 +178,20 @@ const app = express();
 // // By default cors is set to true and we want to disable it
 // // Hence our ENABLE_CORS variable is set to false
 // // Now server will not be able to access the  api without permission
-// const enableCors = ( process.env.ENABLE_CORS || 'true' ) === 'true' ;
-// console.log('CORS setting:', enableCors );
 
+
+const enableCors = (process.env.ENABLE_CORS || 'true') === 'true' ;
+console.log('CORS setting:', enableCors);
+
+
+async function start() {
+  try {
+    await connectToDB(); // connecting to mongoDB database
+    app.listen(port, () => { log(`API SERVER started on port ${port}`); }); // start server
+  } catch (errormessage) {
+    log('ERROR: ', errormessage);
+  }
+}
 
 /**
  * Creating ApolloServer for Local API Server
@@ -188,19 +204,12 @@ const server = new ApolloServer({
     console.error(error);
     return error;
   },
-}, (async function () {
-  try {
-    await connectToDB(); // connecting to mongoDB localDataBase system
-    app.listen(port, () => { log(`API Server started on port ${port}`); }); // Starting our express server
-  } catch (err) {
-    log('ERROR:', err);
-  }
-}()));
+}, start());
 
 
 /**
  * applying the GraphQL middleware configuration
  */
 // server cors implementation with this cors is disabled
-// server.applyMiddleware({app,path:'/graphql' , cors:enableCors });
-server.applyMiddleware({ app, path: '/graphql' });
+server.applyMiddleware({ app, path: '/graphql', cors: true });
+// server.applyMiddleware({ app, path: '/graphql', cors: true });

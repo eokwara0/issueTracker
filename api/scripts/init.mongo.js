@@ -48,16 +48,16 @@ const issuesDB = [{
 }];
 
 
-db.issues.remove({});
+db.issues.deleteMany({});
 
 db.issues.insertMany(issuesDB);
-const count = db.issues.count();
+const count = db.issues.countDocuments();
 // eslint-disable-next-line no-restricted-globals
 print('Inserted', count, 'issues');
 
 //
-db.counters.remove({ _id: 'issues' });
-db.counters.insert({ _id: 'issues', current: count });
+db.counters.deleteMany({ _id: 'issues' });
+db.counters.insertOne({ _id: 'issues', current: count });
 
 db.issues.createIndex({ id: 1 }, { unique: true });
 db.issues.createIndex({ status: 1 });
