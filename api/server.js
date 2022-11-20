@@ -130,7 +130,6 @@ async function getNextSequence(name) {
 
 // resolver for issueAdd mutation
 async function issueAdd(_, { issue }) {
-
   /** Validate issue */
   validateIssue(issue);
 
@@ -144,7 +143,6 @@ async function issueAdd(_, { issue }) {
   const result = await db.collection('issues').insertOne(newIssue);
   const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
   return savedIssue;
-
 }
 
 
@@ -180,7 +178,7 @@ const app = express();
 // // Now server will not be able to access the  api without permission
 
 
-const enableCors = (process.env.ENABLE_CORS || 'true') === 'true' ;
+const enableCors = (process.env.ENABLE_CORS || 'true') === 'true';
 console.log('CORS setting:', enableCors);
 
 

@@ -1,0 +1,63 @@
+
+version: "3.9"
+
+services:
+  mongodb:
+    container_name: mongodatabase
+    build: ./mongo/
+    volumes:
+      - type : volume
+        source: app
+        target: /data/db
+        volume:
+          nocopy: true
+    networks:
+      - front-end
+
+
+  api:
+    container_name: apiv1
+    build: ./api/
+    depends_on:
+      - mongodb
+    environment:
+      - DB_URL=mongodb://mongodatabase:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4
+      - API_SERVER_PORT=3000
+      - ENABLE_CORS=false
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+
+    networks:
+      - front-end 
+
+
+  uiserver:
+    container_name: uiserver
+    build: ./ui/
+    depends_on:
+      - api
+    environment:
+    - UI_SERVER_PORT=4040
+    - UI_API_ENDPOINT=http://localhost:3000/graphql
+    ports:
+      - target: 4040
+        published: 4040
+        protocol: tcp
+
+    networks:
+      - front-end 
+networks:
+  front-end:
+    name: nginx
+    driver: bridge
+volumes:
+  app:
+
+  # js:
+  #   ports:
+  #     - 8000
+  #   network: 
+  #   - myNetwork
+  #   #http://myNetwork:4043

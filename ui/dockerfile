@@ -1,0 +1,8 @@
+FROM node:latest
+WORKDIR /app
+COPY ["package.json" , "package-lock.json","./"]
+RUN npm install -y
+COPY . .
+EXPOSE 4040
+VOLUME ["/home/emmanuel/app" , "/app"]
+CMD [ "node"  , "./uiserver.js" ]
