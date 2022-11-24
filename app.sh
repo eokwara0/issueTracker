@@ -7,13 +7,18 @@ APP_ENDPOINT="http://localhost:4040"
 
 
 
+## TODO: add configuration for different platforms
+## TODO: platforms like windows and mac
+## TODO: Implement better error handling
+
 native(){
 
+    ## setting database url for environment
     export DB_URL='mongodb://0.0.0.0:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4'
 
     ## building the docker mongodb image
     docker build --tag mongodb:latest ./mongo/
-    if [[ "$?" -eq "0" ]];
+    if [[ "$?" -eq "0" ]];  # validates whether the previous command was successfully executed
     then
         sleep 3 && docker run -d --rm --name ${DOCKER_CONTAINER} --publish 27017:27017 mongodb:latest
         if [ $? -eq 0 ];
@@ -59,6 +64,7 @@ native(){
 
 # CREATES DOCKER VOLUME
 createVolume(){
+    
     docker volume create ${DOCKER_VOLUME}
     if [ $? -eq 0 ]
     then
@@ -82,7 +88,7 @@ createNetwork(){
     fi
 }
 
-
+## cleaing docker environment data
 clean_docker(){
     docker compose down
     if [ $? -eq 0 ];
@@ -95,6 +101,8 @@ clean_docker(){
     fi
 }
 
+
+## cleaing native environment variables 
 clean_native(){
 
     docker stop ${DOCKER_CONTAINER}
@@ -111,6 +119,7 @@ clean_native(){
 
 
 
+## runs the docker environment for the application
 docker_run(){
 
     createVolume
