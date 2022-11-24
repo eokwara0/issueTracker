@@ -7,7 +7,7 @@ services:
     build: ./mongo/
     volumes:
       - type : volume
-        source: app
+        source: issuetracker
         target: /data/db
         volume:
           nocopy: true
@@ -50,14 +50,7 @@ services:
       - front-end 
 networks:
   front-end:
-    name: nginx
+    name: issuetracker
     driver: bridge
 volumes:
-  app:
-
-  # js:
-  #   ports:
-  #     - 8000
-  #   network: 
-  #   - myNetwork
-  #   #http://myNetwork:4043
+  issuetracker:

@@ -1,4 +1,7 @@
+/* eslint-disable padded-blocks */
 /* eslint-disable no-console */
+
+
 const express = require('express');
 const fs = require('fs');
 const { ApolloServer, UserInputError } = require('apollo-server-express');
@@ -10,7 +13,7 @@ require('dotenv').config();
 
 
 /**
- * mongodb url localhost >>
+ * mongodb url localhost
  */
 const url = process.env.DB_URL || 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4';
 
@@ -128,8 +131,9 @@ async function getNextSequence(name) {
 }
 
 
-// resolver for issueAdd mutation
+/** resolver for issueAdd mutation */
 async function issueAdd(_, { issue }) {
+
   /** Validate issue */
   validateIssue(issue);
 
@@ -143,6 +147,7 @@ async function issueAdd(_, { issue }) {
   const result = await db.collection('issues').insertOne(newIssue);
   const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
   return savedIssue;
+
 }
 
 
