@@ -4,7 +4,7 @@ DOCKER_VOLUME="issuetracker"
 DOCKER_NETWORK="issuetracker"
 DOCKER_CONTAINER="issuecontainer"
 APP_ENDPOINT="http://localhost:4040"
-env DB_URL='mongodb://0.0.0.0:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4'
+export DB_URL='mongodb://0.0.0.0:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4'
 
 
 
@@ -104,7 +104,7 @@ clean_native(){
         if [ $? -eq 0 ];
         then
             echo "🫠cleaning complete"
-            exit 1 
+            exit 1
         fi
     fi
 }
@@ -152,6 +152,7 @@ then
     clean_native
 else
     echo "-------< To run the program using docker run  app.sh docker >------"
-    echo "-------> To run on your natvie system run bash app.sh native > ------"
-    echo "-------< To clean the program run app.sh stop >------- "
+    echo "-------> To run on your native system run bash app.sh native > ------"
+    echo "-------< To clean the docker program run app.sh clean_docker >------- "
+    echo "-------< To clean the native program run app.sh clean_native >------- "
 fi
