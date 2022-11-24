@@ -4,12 +4,12 @@ DOCKER_VOLUME="issuetracker"
 DOCKER_NETWORK="issuetracker"
 DOCKER_CONTAINER="issuecontainer"
 APP_ENDPOINT="http://localhost:4040"
-export DB_URL='mongodb://0.0.0.0:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4'
 
 
 
 native(){
 
+    export DB_URL='mongodb://0.0.0.0:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4'
 
     ## building the docker mongodb image
     docker build --tag mongodb:latest ./mongo/
@@ -122,9 +122,9 @@ docker_run(){
             docker compose up -d
             echo "🚀 Containers are up and running"
             echo "intializing database "
-            docker exec -it mongodatabase mongosh --quiet issuetracker init.mongo.js
+            docker exec -it mongodatabase mongosh --quiet issuetracker /init.mongo.js
             echo "🚀Done navigate to ${APP_ENDPOINT}"
-            echo "To stop containers run docker compose down"
+            echo "To stop containers run bash app.sh clean_docker"
         fi
     else
         echo "ERROR: internal error"
