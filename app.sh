@@ -151,7 +151,7 @@ elif [[ "$1" == "clean_native" ]];
 then
     clean_native
 else
-    echo "-------< To run the program using docker run  app.sh docker >------"
+    echo "-------< To run the program using docker run bash app.sh docker >------"
     echo "-------> To run on your native system run bash app.sh native > ------"
     echo "-------< To clean the docker program run app.sh clean_docker >------- "
     echo "-------< To clean the native program run app.sh clean_native >------- "
