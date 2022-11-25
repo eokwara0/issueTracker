@@ -33,9 +33,9 @@ To install the requirements follow the links below
 <br>
 
 
-- [ x ] [Docker](https://docs.docker.com/get-docker)
-- [ x ] [NodeJs](https://nodejs.org/en/download)
-- [ x ] npm <code> ( node package manager ) </code>
+- [x] [Docker](https://docs.docker.com/get-docker)
+- [x] [NodeJs](https://nodejs.org/en/download)
+- [x] npm <code> ( node package manager ) </code>
 
 <br>
 
