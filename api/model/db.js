@@ -1,7 +1,8 @@
 /* eslint-disable linebreak-style */
-require('dotenv').config();
 const { MongoClient } = require('mongodb');
-const { console } = require('console');
+const { log } = require('console');
+require('dotenv').config();
+
 
 /**
  * mongodb url localhost
@@ -15,7 +16,7 @@ let db;
 async function connectToDB() {
   const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
   await client.connect();
-  console.log('Connected to MongoDB at ', url);
+  log('Connected to MongoDB at ', url);
   db = client.db('issuetracker');
 }
 

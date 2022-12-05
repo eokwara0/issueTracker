@@ -23,7 +23,7 @@ services:
     environment:
       - DB_URL=mongodb://mongodatabase:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4
       - API_SERVER_PORT=3000
-      - ENABLE_CORS=false
+      - ENABLE_CORS=true
     ports:
       - target: 3000
         published: 3000

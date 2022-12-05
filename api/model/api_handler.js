@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 require('dotenv').config();
 const fs = require('fs');
-const console = require('console');
+const { log, error } = require('console');
 const { ApolloServer } = require('apollo-server-express');
 const GraphQLDate = require('./graphql_date');
 const about = require('./about');
@@ -29,16 +29,16 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs: fs.readFileSync('./Issue.graphql', 'utf-8'),
   resolvers,
-  formatError: (error) => {
-    console.error(error);
-    return error;
+  formatError: (error_) => {
+    error(error_);
+    return error_;
   },
 });
 
 
 function installHandler(app) {
   const enableCors = (process.env.ENABLE_CORS || 'true') === 'true';
-  console.log('CORS setting:', enableCors);
+  log('CORS setting:', enableCors);
   server.applyMiddleware({ app, path: '/graphql', cors: enableCors });
 }
 module.exports = { installHandler };

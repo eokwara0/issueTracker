@@ -3,8 +3,8 @@
 
 require('dotenv').config();
 const express = require('express');
-const { connectToDB } = require('./db');
-const { installHandler } = require('./api_handler')
+const { connectToDB } = require('./model/db');
+const { installHandler } = require('./model/api_handler');
 
 // Atlas URL - replace UUU with user, PPP with password, XXX with hostname
 // const url = 'mongodb+srv://UUU:PPP@cluster0-XXX.mongodb.net/issuetracker?retryWrites=true';
@@ -12,12 +12,20 @@ const { installHandler } = require('./api_handler')
 // const url = 'mongodb://UUU:PPP@XXX.mlab.com:33533/issuetracker';
 
 
+/** express app  */
 const app = express();
+
+/** applying the graphql middleware */
 installHandler(app);
 
+/**
+ * Port number
+ * */
 const port = process.env.API_SERVER_PORT || 3000;
 
-
+/**
+ * Starting the server as well as initializing database
+ * */
 (async function start() {
   try {
     await connectToDB();
