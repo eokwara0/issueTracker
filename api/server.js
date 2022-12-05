@@ -12,3 +12,19 @@ const { installHandler } = require('./api_handler')
 // const url = 'mongodb://UUU:PPP@XXX.mlab.com:33533/issuetracker';
 
 
+const app = express();
+installHandler(app);
+
+const port = process.env.API_SERVER_PORT || 3000;
+
+
+(async function start() {
+  try {
+    await connectToDB();
+    app.listen(port, () => {
+      console.log(`API server started on port ${port}`);
+    });
+  } catch (err) {
+    console.log('ERROR:', err);
+  }
+}());
