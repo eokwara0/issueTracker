@@ -57,7 +57,7 @@ async function add(_, { issue }) {
   const result = await db.collection('issues').insertOne(newIssue);
   const savedIssue = await db.collection('issues').findOne({ _id: result.insertedId });
   return savedIssue;
-
 }
+
 
 module.exports = { list, add };
