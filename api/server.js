@@ -5,10 +5,11 @@
 const express = require('express');
 const fs = require('fs');
 const { ApolloServer, UserInputError } = require('apollo-server-express');
-const { GraphQLScalarType } = require('graphql');
-const { Kind } = require('graphql/language');
 const { MongoClient } = require('mongodb');
 const { log } = require('console');
+
+const about = require('./about');
+const GraphQLDate = require('./graphql_date');
 require('dotenv').config();
 
 
@@ -36,45 +37,6 @@ let db;
 
 
 /**
- * @Defining GrapQL Schema for our GraphQLScalar Type ( GraphQLDate )
- */
-const GraphQLDate = new GraphQLScalarType({
-
-  // Scalar definition
-  // Scalar description
-
-  name: 'GraphQLDate',
-  description: 'A Data() type in GraphQL as a scalar',
-
-  /**
-     *
-     * @param {Incoming issue value } value
-     * @returns  Date object if the values is a valid data string else returns undefined
-     */
-
-  parseValue(value) {
-    const dateValue = new Date(value);
-    return Number.isNaN(dateValue.getTime()) ? undefined : dateValue;
-  },
-
-
-  // processes Incoming value
-  parseLiteral(ast) {
-    if (ast.kind === Kind.STRING) {
-      const value = new Date(ast.value);
-      return Number.isNaN(value.getTime()) ? undefined : value;
-    }
-    return undefined;
-  },
-
-  // serializes the value
-  serialize(value) {
-    return value.toISOString();
-  },
-});
-
-
-/**
  *
  * @param {issue to be validated } issue
  * Validates issue request coming from the client .
@@ -89,27 +51,19 @@ function validateIssue(issue) {
     errors.push('Field "title" must be at least 3 characters long.');
   }
 
-  // validates if the issue has been
-  // assigned and if has an owner
+  /** validates if the issue has been assigned and if it has an owner */
   if (issue.status === 'Assinged' && !issue.owner) {
     errors.push('Field "owner" is required when status is "Assinged"');
   }
-  // checks if there are any errors
-  // if there is throw a userInputError containing the errors list
+
+  /** checks if there are any errors
+   * if True throw a userInputError containing the errors list
+   */
   if (errors.length > 0) {
     throw new UserInputError('Invalid input(s)', { errors });
   }
 }
 
-
-/** About message */
-let aboutMessage = 'Issue Tracker API v1.0';
-
-/** About message mutation resolver  */
-function setAboutMessage(_, { message }) {
-  aboutMessage = message;
-  return aboutMessage;
-}
 
 /** IssueList resolver */
 /** query's the database and returns a list of issues  */
@@ -119,7 +73,7 @@ async function issueList() {
   return issues;
 }
 
-// returns back the number of sequences in the database and add 1
+/** returns the number of dequences in the database and adds 1 */
 async function getNextSequence(name) {
   const data = await db.collection('issues').count();
   const incr = data + 1;
@@ -151,19 +105,21 @@ async function issueAdd(_, { issue }) {
 }
 
 
+/** GraphQL Resolver */
 const resolvers = {
   Query: {
-    about: () => aboutMessage,
+    about: about.getAboutMessage,
     issueList,
   },
   Mutation: {
-    setAboutMessage,
+    setAboutMessage: about.setAboutMessage,
     issueAdd,
   },
   GraphQLDate,
 };
 
 
+/** Connects to the database and intializes the DB ( database ) variable */
 async function connectToDB() {
   const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
   await client.connect();
@@ -177,16 +133,21 @@ async function connectToDB() {
  */
 const app = express();
 
-// // Reading enable core variable from environment
-// // By default cors is set to true and we want to disable it
-// // Hence our ENABLE_CORS variable is set to false
-// // Now server will not be able to access the  api without permission
 
+/**
+ * Reading enable core variable from environment
+ * By default cors is set to true but it allows for all hosts to connect
+ * So we want to disable CORS and set it to false
+ * And in doing so the server will not be able to access the api without permission
+ */
 
 const enableCors = (process.env.ENABLE_CORS || 'true') === 'true';
 console.log('CORS setting:', enableCors);
 
 
+/**
+ * Connects to the Database and starts the server.
+ */
 async function start() {
   try {
     await connectToDB(); // connecting to mongoDB database
@@ -212,7 +173,6 @@ const server = new ApolloServer({
 
 /**
  * applying the GraphQL middleware configuration
+ * server cors implementation
  */
-// server cors implementation with this cors is disabled
 server.applyMiddleware({ app, path: '/graphql', cors: true });
-// server.applyMiddleware({ app, path: '/graphql', cors: true });
