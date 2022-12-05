@@ -4,6 +4,10 @@ DOCKER_VOLUME="issuetracker"
 DOCKER_NETWORK="issuetracker"
 DOCKER_CONTAINER="issuecontainer"
 APP_ENDPOINT="http://localhost:4040"
+ISSUETRACKER_API="issuetracker-api"
+ISSUETRACKER_UISERVER="issuetracker-uiserver"
+ISSUETRACKER_DATABASE="issuetracker-mongodb"
+
 
 
 
@@ -97,6 +101,12 @@ clean_docker(){
         if  [ $? -eq 0 ];
         then
             echo "🚀Cleaning successfully"
+            echo "🤺Removing images"
+            docker image rm ${ISSUETRACKER_API} ${ISSUETRACKER_UISERVER} ${ISSUETRACKER_DATABASE}
+            if [ $? -eq 0 ];
+            then
+                echo "🚀🚀Docker images removed .. "
+            fi
         fi
     fi
 }
