@@ -1,7 +1,6 @@
+/* eslint-disable linebreak-style */
 const { UserInputError } = require('apollo-server-express');
-const { getDB , getNextSequence } = require('./db.js');
-
-
+const { getDB, getNextSequence } = require('./db');
 
 
 /**
@@ -61,4 +60,4 @@ async function add(_, { issue }) {
 
 }
 
-module.exports = { list, add }
+module.exports = { list, add };

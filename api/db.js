@@ -1,7 +1,7 @@
+/* eslint-disable linebreak-style */
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
-
-
+const { console } = require('console');
 
 /**
  * mongodb url localhost
@@ -9,7 +9,7 @@ const { MongoClient } = require('mongodb');
 const url = process.env.DB_URL || 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4';
 
 
-let db ;
+let db;
 
 /** Connects to the database and intializes the DB ( database ) variable */
 async function connectToDB() {
@@ -35,8 +35,8 @@ async function getNextSequence(name) {
  * 
  * @returns Database object
  */
-function getDB(){
-    return db ;
+function getDB() {
+  return db;
 }
 
-module.exports = { connectToDB , getNextSequence , getDB }
+module.exports = { connectToDB, getNextSequence, getDB };

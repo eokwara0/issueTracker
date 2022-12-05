@@ -1,6 +1,7 @@
 /* eslint-disable linebreak-style */
-const fs = require('fs');
 require('dotenv').config();
+const fs = require('fs');
+const console = require('console');
 const { ApolloServer } = require('apollo-server-express');
 const GraphQLDate = require('./graphql_date');
 const about = require('./about');
