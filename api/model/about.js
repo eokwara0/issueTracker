@@ -6,15 +6,13 @@ let aboutMessage = 'Issue Tracker API v1.0';
 
 
 /** About message mutation resolver  */
-function setAboutMessage(_, { message }) {
+const setAboutMessage = (_, { message }) => {
   aboutMessage = message;
   return aboutMessage;
-}
+};
 
 
-function getAboutMessage() {
-  return aboutMessage;
-}
+const getAboutMessage = () => aboutMessage;
 
 
 module.exports = { getAboutMessage, setAboutMessage };
