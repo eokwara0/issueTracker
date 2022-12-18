@@ -18,14 +18,10 @@ const app = express();
 /** applying the graphql middleware */
 installHandler(app);
 
-/**
- * Port number
- * */
+/** Port number */
 const port = process.env.API_SERVER_PORT || 3000;
 
-/**
- * Starting the server as well as initializing database
- * */
+/** Starting the server as well as initializing database */
 (async function start() {
   try {
     await connectToDB();
