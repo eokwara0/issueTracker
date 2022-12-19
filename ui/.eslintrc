@@ -4,6 +4,7 @@
         "node" : true
     },
     "rules":{
+        "import/extensions" : ["error" , "always" , {"ignorePackages" : true }],
         "no-console": "off",
         "react/props-types" : "off"
     }
