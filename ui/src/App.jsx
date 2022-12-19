@@ -1,10 +1,21 @@
+/* eslint "react/react-in-jsx-scope": "off" */
+/* globals React ReactDOM */
+/* eslint "react/jsx-no-undef": "off" */
 
 
-
+// eslint-disable-next-line react/prefer-stateless-function
 class IssueFilter extends React.Component{
+    constructor( props){
+        super(props)
+        this.state = {
+            info : "This is a placeholder for issue filter.",
+        }
+    }
     render(){
         return (
-        <div> This why is a placeholder for the issue filter.</div>
+            <div>
+                {this.state.info}
+            </div>
         );
     }
 }
