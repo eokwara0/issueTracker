@@ -7,7 +7,7 @@
     "start": "nodemon -w uiserver.js -w .env uiserver.js",
     "compile": "babel src --out-dir public",
     "watch": "babel  src -d public -w --verbose",
-    "lint" : "npx eslint . --ext js,jsx --ignore-pattern public",
+    "lint": "npx eslint . --ext js,jsx --ignore-pattern public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "@babel/core": "^7.17.12",
     "@babel/preset-env": "^7.17.12",
     "@babel/preset-react": "^7.17.12",
+    "babel-loader": "^8.3.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-import": "^2.26.0",

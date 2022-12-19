@@ -2,6 +2,8 @@
 /* globals React ReactDOM */
 /* eslint "react/jsx-no-undef": "off" */
 
+import graphQLFetch from "./graphQLFetch.js";
+
 
 // eslint-disable-next-line react/prefer-stateless-function
 class IssueFilter extends React.Component{
@@ -84,13 +86,13 @@ function IssueRow (props){
 
 // Passing Data Using Children
 
-const dateRegExp = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
-function jsonDateReviver(key,value){
-    if(dateRegExp.test(value)){
-        return new Date(value);
-    }
-    return value ;
-}
+// const dateRegExp = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
+// function jsonDateReviver(key,value){
+//     if(dateRegExp.test(value)){
+//         return new Date(value);
+//     }
+//     return value ;
+// }
 
 class IssueList extends React.Component{
     constructor(){
@@ -102,30 +104,30 @@ class IssueList extends React.Component{
     componentDidMount() {
         this.loadData();
     }
-    async graphQLFetch(query,variables = {}){
-        try{
-            const response = await fetch(window.ENV.UI_API_ENDPOINT,{
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({query,variables})
-            });
-            const body = await response.text();
-            const result = JSON.parse(body,jsonDateReviver);
-            if(result.errors){
-                const error  =result.errors[0];
-                if(error.extensions.code == 'BAD_USER_INPUT'){
-                    const details = error.extensions.exception.errors.join('\n');
-                    alert(`${error.message}:\n${details}`);
-                }else{
-                    alert(`${error.extensinos.code}:${error.message}`);
-                }
+    // async graphQLFetch(query,variables = {}){
+    //     try{
+    //         const response = await fetch(window.ENV.UI_API_ENDPOINT,{
+    //             method: 'POST',
+    //             headers: {'Content-Type': 'application/json'},
+    //             body: JSON.stringify({query,variables})
+    //         });
+    //         const body = await response.text();
+    //         const result = JSON.parse(body,jsonDateReviver);
+    //         if(result.errors){
+    //             const error  =result.errors[0];
+    //             if(error.extensions.code == 'BAD_USER_INPUT'){
+    //                 const details = error.extensions.exception.errors.join('\n');
+    //                 alert(`${error.message}:\n${details}`);
+    //             }else{
+    //                 alert(`${error.extensinos.code}:${error.message}`);
+    //             }
 
-            }
-            return result.data
-        }catch(e){
-            alert(`Error in sending data to server: ${e.message}`);
-        }
-    }
+    //         }
+    //         return result.data
+    //     }catch(e){
+    //         alert(`Error in sending data to server: ${e.message}`);
+    //     }
+    // }
 
     async loadData() {
         const query = `query{
@@ -134,7 +136,7 @@ class IssueList extends React.Component{
                 created effort due
             }
         }`;
-        const data = await this.graphQLFetch(query);
+        const data = await graphQLFetch(query);
         if(data){
             this.setState({issues: data.issueList});
         }
@@ -147,7 +149,7 @@ class IssueList extends React.Component{
             }
         }`;
 
-        const data = await this.graphQLFetch(query,{issue});
+        const data = await graphQLFetch( query , { issue });
         if (data){
             this.loadData();
         }
