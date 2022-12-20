@@ -5,67 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issue Tracker</title>
-<style>
-
-    /* input:focus{
-        transition: all 2s cubic-bezier(0.075, 0.82, 0.165, 1) ease-in-out;
-    } */
-    button{
-        width:auto;
-        height : 30px;
-        background-color: rgb(63, 95, 155);
-        box-shadow: rgb(182, 180, 180) 1px 1px 4px ;
-        color : white ;
-        font-weight: bold ;
-        border-radius: 5px;
-        text-align: center;
-        padding: 5px;
-        border: none ;
-    }
-    button:hover{
-        background-color: rgba(165, 165, 165, 0);
-        border: cornflowerblue solid 1px ;
-        color : rgb(94, 92, 92) ;
-    }
-    input{
-        margin: 10px;
-        border: none ;
-        padding : 4px;
-        /* transition: all .9s ease-in-out; */
-    }
-    input::after{
-        content: "data";
-        width: 100%;
-        height: 10px;
-        background-color:tomato;
-    }
-    .owner::after{
-        content: "done";
-        background-color: tomato;
-        height:10px;
-        width : 30px
-    }
-
-    input:focus{
-        outline: none ;
-        /* border-bottom: tomato solid .5px; */
-        /* outline:rgb(179, 179, 223); */
-        /* border: none; */
-    }
-    input::placeholder{
-        color : rgb(133, 117, 117) ;
-    }
-    
-    table.bordered-table th, td {
-        text-align: center;
-        border: 1px solid silver;
-    }
-    table.bordered-table {
-        border-collapse: collapse;
-    }
-    
-</style>
 </head>
+<style>
+    table{
+        width : 80%;
+    }
+    th {
+        width : 10%;
+        text-align: left;
+    }
+</style>
 <body>
 
     <div id="content" class="content"></div>
