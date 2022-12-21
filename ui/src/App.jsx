@@ -12,6 +12,7 @@ const element = (
         <Page/>
     </Router>
 )
+
 const root = ReactDOM.createRoot( document.getElementById('content') )
 root.render( element )
 if(module.hot){
