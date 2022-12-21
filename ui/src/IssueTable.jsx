@@ -11,6 +11,7 @@ export default function  IssueTable(props){
                     <th>Owner</th><th>Created</th>
                     <th>Effort</th><th>Due Date</th>
                     <th>Title</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
