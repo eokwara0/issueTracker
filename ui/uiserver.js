@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const path = require('path');
 
 // port number
 const port = process.env.UI_SERVER_PORT || 8000;
@@ -13,8 +13,8 @@ const express = require('express');
 const app = express();
 
 // Enabling hot module replacement
-const enableHMR = ( process.env.ENABLE_HMR || 'true') === 'true';
-if (enableHMR && (process.env.NODE_ENV !== 'production')){
+const enableHMR = (process.env.ENABLE_HMR || 'true') === 'true';
+if (enableHMR && (process.env.NODE_ENV !== 'production')) {
   console.log('Adding dev middleware, enabling HMR');
 
   const webpack = require('webpack');
@@ -24,13 +24,12 @@ if (enableHMR && (process.env.NODE_ENV !== 'production')){
   const config = require('./webpack.config.js');
   config.entry.app.push('webpack-hot-middleware/client');
   config.plugins = config.plugins || [];
-  config.plugins.push( new webpack.HotModuleReplacementPlugin());
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
 
   const compiler = webpack(config);
-  app.use(devMiddleware( compiler ))
-  app.use(hotMiddleware( compiler ))
+  app.use(devMiddleware(compiler));
+  app.use(hotMiddleware(compiler));
 }
-
 
 
 // importing http-proxy-middleware object
@@ -61,6 +60,10 @@ const env = { UI_API_ENDPOINT };
 
 app.get('/env.js', (req, res) => {
   res.send(`window.ENV = ${JSON.stringify(env)})`);
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('public/index.html'));
 });
 
 

@@ -34,9 +34,11 @@ function validate(issue) {
 
 /** IssueList resolver */
 /** query's the database and returns a list of issues  */
-async function list() {
+async function list(_, { status }) {
   const db = getDB();
-  const issues = await db.collection('issues').find({}).toArray();
+  const filter = {};
+  if (status) filter.status = status;
+  const issues = await db.collection('issues').find(filter).toArray();
   return issues;
 }
 
@@ -59,5 +61,11 @@ async function add(_, { issue }) {
   return savedIssue;
 }
 
+async function get(_, { id }) {
+  const db = getDB();
+  const issue = await db.collection('issues').findOne({ id });
+  return issue;
+}
 
-module.exports = { list, add };
+
+module.exports = { list, add, get };
