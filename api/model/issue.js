@@ -61,5 +61,11 @@ async function add(_, { issue }) {
   return savedIssue;
 }
 
+async function get(_, { id }) {
+  const db = getDB();
+  const issue = await db.collection('issues').findOne({ id });
+  return issue;
+}
 
-module.exports = { list, add };
+
+module.exports = { list, add, get };

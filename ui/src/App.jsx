@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'babel-polyfill';
 import 'whatwg-fetch';
-import { HashRouter as Router  } from 'react-router-dom';
+import { BrowserRouter as Router  } from 'react-router-dom';
 import Page from './Page.jsx';
 
 const element = (

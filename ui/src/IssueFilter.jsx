@@ -1,24 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-export default class IssueFilter extends React.Component{
+import { withRouter } from 'react-router-dom';
+class IssueFilter extends React.Component{
     constructor( props){
         super(props)
-        this.state = {
-            info : "This is a placeholder for issue filter.",
-        }
+        this.onChangeStatus = this.onChangeStatus.bind(this)
     }
+
+    onChangeStatus(event){
+        const status = event.target.value;
+        const { history } = this.props
+        history.push({
+            pathname : '/issues',
+            search : status ? `?status=${status}` : ''
+        })
+        }
     render(){
         return (
             <div>
-                {/* <a href="/#/issues">All Issues</a> */}
-                <Link to="/issues">All Issues</Link>
-                {/* {' | '} */}
-                {/* <a href="/#/issues?status=New">New Issues</a> */}
-                <Link to={{pathname: '/issues' , search: '?status=New'}}>New Issue</Link>
-                {/* {' | '} */}
-                {/* <a href="/#/issues?status=Assigned">Assigned Issues</a> */}
-                <Link to={{pathname: '/issues' , search:'?status=Assigned'}}>Assigned Issues</Link>
+              Status: {' '}
+              <select onChange={this.onChangeStatus}>
+                <option value="">(All)</option>
+                <option value="New">New</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Fixed">Fixed</option>
+                <option value="Closed">Closed</option>
+              </select>
             </div>
         );
     }
 }
+
+export default withRouter(IssueFilter);
