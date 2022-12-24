@@ -21,7 +21,11 @@ type Issue{
 
 type Query{
     about: String!
-    issueList(status : StatusType):[Issue!]!
+    issueList(
+        status : StatusType
+        effortMin: Int
+        effortMax: Int
+        ):[Issue!]!
     issue(id: Int!): Issue!
 }
 
