@@ -27,6 +27,11 @@
   },
   "homepage": "https://github.com/emmanuel-okwara/ReactPractice#readme",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.1",
     "babel-polyfill": "^6.26.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",

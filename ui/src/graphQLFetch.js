@@ -2,7 +2,7 @@
 /* eslint-disable no-alert */
 const dateRegExp = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
 
-
+/** 👍🏽 checks whether the date passed is accuratef */
 function jsonDateReviver(key, value) {
   if (dateRegExp.test(value)) {
     return new Date(value);
@@ -10,15 +10,22 @@ function jsonDateReviver(key, value) {
   return value;
 }
 
+
+/** 👻 makes requests to the api to get and post information */
 export default async function graphQLFetch(query, variables = {}) {
   try {
+    // 🚀quering database for information.
     const response = await fetch(window.ENV.UI_API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, variables }),
     });
+
+    // 🚀 converting data into text
     const body = await response.text();
     const result = JSON.parse(body, jsonDateReviver);
+
+    // 🫠Handling errors
     if (result.errors) {
       const error = result.errors[0];
       if (error.extensions.code === 'BAD_USER_INPUT') {
