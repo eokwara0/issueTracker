@@ -2,7 +2,12 @@
 import React from 'react';
 import { Link , NavLink , withRouter } from 'react-router-dom';
 
-const IssueRow = withRouter(( { issue, location : { search }}) => {
+const IssueRow = withRouter(( { 
+    issue, 
+    location : { search },
+    closeIssue,
+    index,
+    }) => {
     const selectLocaiton = { pathname : `/issues/${issue.id}` , search };
     return (
             <tr>
@@ -16,12 +21,24 @@ const IssueRow = withRouter(( { issue, location : { search }}) => {
                 <Link to={`/edit/${issue.id}`}>Edit</Link>
                     {' | '}
                 <NavLink to={selectLocaiton}>Select</NavLink>
+                { '| ' }
+                <button type="button" onClick={() => { closeIssue( index );}}>
+                    Close
+                    </button>
             </tr>
         )
 })
 
 
-export default function  IssueTable(props){
+export default function  IssueTable({ issues, closeIssue }){
+    const issueRows = issues.map(( issue, index ) => (
+        <IssueRow
+        key={issue.id}
+        issue={issue}
+        closeIssue={closeIssue}
+        index={index}
+        />
+    ));
     return (
         <table style={{borderCollapse: "collapse"}}>
             <thead>
@@ -34,7 +51,7 @@ export default function  IssueTable(props){
                 </tr>
             </thead>
             <tbody>
-                {props.issues.map(issue => <IssueRow key={issue.id} issue={issue}/>)}
+                {issueRows}
             </tbody>
         </table>
     );
