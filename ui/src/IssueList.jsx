@@ -17,6 +17,8 @@ export default class IssueList extends React.Component{
         super(props);
         this.state = {issues : []};
         this.createIssue = this.createIssue.bind(this);
+        this.closeIssue = this.closeIssue.bind(this);
+        this.deleteIssue = this.deleteIssue.bind(this);
     }
 
     componentDidMount() {
@@ -73,6 +75,51 @@ export default class IssueList extends React.Component{
             this.loadData();
         }
     }
+
+    async closeIssue(index){
+
+        const query = `mutation issueClose($id: Int! , $changes : IssueUpdateInputs!) {
+            issueUpdate(id:$id , changes:$changes) {
+                id title status owner
+                effort created due description
+            }
+        }`;
+        const changes = { status : "Closed"};
+        const { issues } = this.state;
+        const data = await graphQLFetch( query , { id : issues[index].id , changes : changes });
+
+        if (data){
+            this.setState(( prevState) => {
+                const newList = [...prevState.issues];
+                newList[index] = data.issueUpdate;
+                return { issues : newList };
+            })
+        }else{
+            this.loadData();
+        }
+    }
+
+    async deleteIssue(index){
+        const query = `mutation issueDelete($id:Int!){
+            issueDelete(id: $id)
+        }`;
+        const { issues } = this.state;
+        const { location : { pathname , search } , history } = this.props;
+        const { id } = issues[index];
+        const data = await graphQLFetch( query , { id } );
+        if (data && data.issueDelete){
+            this.setState( prevState => {
+                const newList = [...prevState.issues ];
+                if (pathname === `/issues/${id}`){
+                    history.push({ pathname : '/issues' , search });
+                }
+                newList.splice(index,1);
+                return { issues: newList }
+            });
+        }else {
+            this.loadData();
+        }
+    }
     
 
     render(){
@@ -80,10 +127,12 @@ export default class IssueList extends React.Component{
         const { match }  = this.props ;
         return (
             <React.Fragment>
-                <h1>Issue Tracker</h1>
+                <h1>
+                        Issue Tracker
+                </h1>
                 <IssueFilter/>
                 <hr/>
-                <IssueTable issues={this.state.issues}/>
+                <IssueTable issues={issues} closeIssue={this.closeIssue} deleteIssue={this.deleteIssue}/>
                 <hr/>
                 <IssueAdd createIssue={this.createIssue}/>
                 <hr/>
