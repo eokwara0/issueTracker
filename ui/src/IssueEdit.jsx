@@ -18,6 +18,7 @@ export default class IssueEdit extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onValidityChange = this.onValidityChange.bind(this);
+        this.handleStatus = this.handleStatus.bind(this);
 
     }
 
@@ -38,6 +39,11 @@ export default class IssueEdit extends React.Component {
         // console.log( name ,textValue );
         const value = naturalValue === null ? textValue : naturalValue;
         this.setState( prevState => ({ issue : { ...prevState.issue, [name] : value }}))  
+    }
+    handleStatus(event){
+        const { name , value } = event.target;
+        console.log( name , value);
+        this.setState( prevState => ({ issue : { ...prevState.issue, [name] : value }}));
     }
 
     onValidityChange(event, valid){
@@ -122,7 +128,7 @@ export default class IssueEdit extends React.Component {
                 <tr>
                     <td>Status:</td>
                     <td>
-                        <select name="status" value={status} onChange={this.onChange}>
+                        <select name="status" value={status} onChange={this.handleStatus}>
                             <option value="New">New</option>
                             <option value="Assigned">Assigned</option>
                             <option value="Fixed">Fixed</option>
