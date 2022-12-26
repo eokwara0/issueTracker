@@ -34,10 +34,15 @@ function validate(issue) {
 
 /** IssueList resolver */
 /** query's the database and returns a list of issues  */
-async function list(_, { status }) {
+async function list(_, { status, effortMin, effortMax }) {
   const db = getDB();
   const filter = {};
   if (status) filter.status = status;
+  if (effortMin !== undefined || effortMax !== undefined) {
+    filter.effort = {};
+    if (effortMin !== undefined) filter.effort.$gte = effortMin;
+    if (effortMax !== undefined) filter.effort.$lte = effortMax;
+  }
   const issues = await db.collection('issues').find(filter).toArray();
   return issues;
 }
@@ -67,5 +72,21 @@ async function get(_, { id }) {
   return issue;
 }
 
+async function update(_, { id, changes }) {
+  const db = getDB();
+  if (changes.title || changes.status || changes.owner) {
+    const issue = await db.collection('issues').findOne({ id });
+    Object.assign(issue, changes);
+    validate(issue);
+  }
+  await db.collection('issues').updateOne({ id }, { $set: changes });
+  const savedIssue = await db.collection('issues').findOne({ id });
+  return savedIssue;
+}
 
-module.exports = { list, add, get };
+module.exports = {
+  list,
+  add,
+  get,
+  update,
+};

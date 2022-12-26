@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form onSubmit={this.handleSubmit}>
+        <h3>{`Editing issue: ${id}`}</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Created:</td>
+                    <td>{created.toDateString()}</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td>
+                        <select name="status" value={status} onChange={this.onChange}>
+                            <option value="New">New</option>
+                            <option value="Assigned">Assigned</option>
+                            <option value="Fixed">Fixed</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Owner:</td>
+                    <td>
+                        <input name="owner" value={owner} onChange={this.onChange} />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Effort:</td>
+                    <td>
+                        <input name="effort" value={effort} onChange={this.onChange} />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Due:</td>
+                    <td>
+                        <input name="due" value={due} onChange={this.onChange} />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Title:</td>
+                    <td>
+                        <input size={50} name="title" value={title} onChange={this.onChange} />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td>
+                        <textarea rows={8} cols={50} name="description" value={description} onChange={this.onChange} />
+                    </td>
+                </tr>
+                <tr>
+                    <td />
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <Link to={`/edit/${id - 1}`}>Prev</Link>
+        {' | '}
+        <Link to={`/edit/${id + 1}`}>Next</Link>
+    </form>
+</body>
+
+</html>
