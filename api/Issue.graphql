@@ -32,6 +32,7 @@ type Query{
 type Mutation{
     setAboutMessage(message: String!):String,
     issueAdd(issue: IssueInputs!) :Issue!
+    issueUpdate( id: Int!, changes: IssueUpdateInputs! ) :Issue!
 }
 
 input IssueInputs{
@@ -43,3 +44,13 @@ input IssueInputs{
     due: GraphQLDate
     description: String
 }
+
+input IssueUpdateInputs{
+    title: String
+    status: StatusType
+    owner: String
+    effort: Int
+    due: GraphQLDate
+    description: String 
+}
+
