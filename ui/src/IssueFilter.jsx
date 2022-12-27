@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import URLSearchParams from 'url-search-params';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip } from '@mui/material';
 
 
 class IssueFilter extends React.Component{
@@ -75,23 +76,52 @@ class IssueFilter extends React.Component{
         const { status, changed } = this.state ;
         const { effortMin , effortMax } = this.state;
         return (
-            <div>
-              Status: {' '}
-              <select value={status} onChange={this.onChangeStatus}>
+            <div style={{padding:"10px"}}>
+              {/* Status: {' '} */}
+                <InputLabel id="status">Status</InputLabel>
+                <Select sx={{width: "100px"}}labelId="status"placeholder='Status' size="small"value={status} label="status" onChange={this.onChangeStatus}>
+                <MenuItem value="" >All</MenuItem>
+                <MenuItem value="New" >New</MenuItem>
+                <MenuItem value="Assigned" >Assigned</MenuItem>
+                <MenuItem value="Fixed" >Fixed</MenuItem>
+                <MenuItem value="Closed" >Closed</MenuItem>
+              </Select>
+              {/* <select value={status} onChange={this.onChangeStatus}>
                 <option value="">(All)</option>
                 <option value="New">New</option>
                 <option value="Assigned">Assigned</option>
                 <option value="Fixed">Fixed</option>
                 <option value="Closed">Closed</option>
-              </select>
+              </select> */}
               {' '}
-              Effort between:
+              {/* Effort between: */}
               {' '}
-              <input type="text" size={5} value={effortMin} onChange={this.onChangeEffortMin} />
+
+              <TextField labelId="mineffort" label="effortmin"size="small" value={effortMin} onChange={this.onChangeEffortMin}/>
+              {/* <input type="text" size={5} value={effortMin} onChange={this.onChangeEffortMin} /> */}
               {'-'}
-              <input type="text" size={5} value={effortMax} onChange={this.onChangeEffortMax} />
-              <button type="button" onClick={this.applyFilter}>Apply</button>
-              <button type="button" onClick={this.showOriginalFilter} disabled={!changed}>Reset</button>
+              <TextField label="effortmax" size="small" value={effortMax} onChange={this.onChangeEffortMax}/>
+
+              {/* <input type="text" size={5} value={effortMax} onChange={this.onChangeEffortMax} /> */}
+              {' '}
+              <Tooltip  title="apply" arrow>
+                <Button 
+                    variant='contained' 
+                    size="large" 
+                    type="button" 
+                    onClick={this.applyFilter}>
+                        Apply
+                </Button>
+              </Tooltip>
+              
+              {' '}
+              <Tooltip title="Reset" arrow>
+                <Button 
+                variant='contained' 
+                size="large" 
+                onClick={this.showOriginalFilter} 
+                disabled={!changed}>Reset</Button>
+              </Tooltip>
             </div>
         );
     }

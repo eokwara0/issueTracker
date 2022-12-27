@@ -10,12 +10,15 @@ import IssueFilter from './IssueFilter.jsx';
 import graphQLFetch from "./graphQLFetch.js";
 import IssueDetail from './IssueDetail.jsx';
 import { Route } from 'react-router-dom';
+import { Panel } from 'react-bootstrap';
 
 
 export default class IssueList extends React.Component{
     constructor(props){
+
         super(props);
         this.state = {issues : []};
+
         this.createIssue = this.createIssue.bind(this);
         this.closeIssue = this.closeIssue.bind(this);
         this.deleteIssue = this.deleteIssue.bind(this);
@@ -127,10 +130,14 @@ export default class IssueList extends React.Component{
         const { match }  = this.props ;
         return (
             <React.Fragment>
-                <h1>
-                        Issue Tracker
-                </h1>
-                <IssueFilter/>
+                <Panel>
+                    <Panel.Heading>
+                        <Panel.Title toggle>Filter</Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Body collapsible={true}>
+                        <IssueFilter/>
+                    </Panel.Body>
+                </Panel>
                 <hr/>
                 <IssueTable issues={issues} closeIssue={this.closeIssue} deleteIssue={this.deleteIssue}/>
                 <hr/>
