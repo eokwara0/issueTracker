@@ -1,23 +1,12 @@
 import React from "react";
 import Contents from "./contents.jsx";
-import { NavLink } from 'react-router-dom';
 import { Navbar, Nav, NavItem, OverlayTrigger, Glyphicon } from "react-bootstrap";
 import { Stack } from "@mui/material";
-import { Tooltip , NavDropdown, MenuItem } from "react-bootstrap";
+import { Tooltip , NavDropdown, MenuItem , Grid } from "react-bootstrap";
+
 
 function NavBar(){
     return (
-        // <nav>
-        //     {/* <a href="/">Home</a> */}
-        //     <NavLink exact to="/">Home</NavLink>
-        //     {/* {'|'} */}
-        //     {/* <a href="/#/issues">Issue</a> */}
-        //     <NavLink to="/issues">Issue List</NavLink>
-        //     {/* {'|'} */}
-        //     {/* <a href="/#/report">Report</a> */}
-        //     <NavLink to="/report">Report</NavLink>
-        // </nav>
-
         <Navbar>
             <Navbar.Header>
                 <Navbar.Brand>Issue Tracker</Navbar.Brand>
@@ -45,6 +34,7 @@ function NavBar(){
 function Footer() {
     return (
         <small>
+            <hr/>
             <p className="text-center">
                 Full source code available at this
                 {' '}
@@ -58,7 +48,9 @@ export default function Page(){
     return (
         <div>
             <NavBar/>
-            <Contents/>
+            <Grid fluid>
+                <Contents/>
+            </Grid>
             <Footer/>
         </div>
     )

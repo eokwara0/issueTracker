@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import URLSearchParams from 'url-search-params';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip } from '@mui/material';
+import { ButtonGroup,Button,FormHelperText, FormControl,FormControlLabel,FormGroup, InputLabel, MenuItem, Select, TextField, Tooltip, FormLabel } from '@mui/material';
 
 
 class IssueFilter extends React.Component{
@@ -76,53 +76,54 @@ class IssueFilter extends React.Component{
         const { status, changed } = this.state ;
         const { effortMin , effortMax } = this.state;
         return (
-            <div style={{padding:"10px"}}>
-              {/* Status: {' '} */}
-                <InputLabel id="status">Status</InputLabel>
-                <Select sx={{width: "100px"}}labelId="status"placeholder='Status' size="small"value={status} label="status" onChange={this.onChangeStatus}>
-                <MenuItem value="" >All</MenuItem>
-                <MenuItem value="New" >New</MenuItem>
-                <MenuItem value="Assigned" >Assigned</MenuItem>
-                <MenuItem value="Fixed" >Fixed</MenuItem>
-                <MenuItem value="Closed" >Closed</MenuItem>
-              </Select>
-              {/* <select value={status} onChange={this.onChangeStatus}>
-                <option value="">(All)</option>
-                <option value="New">New</option>
-                <option value="Assigned">Assigned</option>
-                <option value="Fixed">Fixed</option>
-                <option value="Closed">Closed</option>
-              </select> */}
-              {' '}
-              {/* Effort between: */}
-              {' '}
+            <FormGroup>
+            <FormControl size='string'>
+                    <InputLabel id="status">Status</InputLabel>
+                    <Select labelId="status"placeholder='Status' value={status} label="status" onChange={this.onChangeStatus}>
+                    <MenuItem value="" >All</MenuItem>
+                    <MenuItem value="New" >New</MenuItem>
+                    <MenuItem value="Assigned" >Assigned</MenuItem>
+                    <MenuItem value="Fixed" >Fixed</MenuItem>
+                    <MenuItem value="Closed" >Closed</MenuItem>
+                </Select>
+                <FormHelperText id="status" component="h1">Issue Status</FormHelperText>
+            </FormControl>
+                {'-'}
+                {'-'}
+            
+            <FormControl size="string">
+                <FormLabel filled={true}>Effort Between</FormLabel>
+                <TextField labelId="mineffort" label="effortmin" value={effortMin} onChange={this.onChangeEffortMin}/>
+                <FormHelperText id="mineffort" component="h1">EffortMin</FormHelperText>
+                {'-'}
+                {'-'}
+                <TextField labelId="maxeffort" label="effortmax" value={effortMax} onChange={this.onChangeEffortMax}/>
+                <FormHelperText id="maxeffort" component="h1">EffortMax</FormHelperText>
+            </FormControl>
+                {'-'}
+                {'-'}
+            <FormControl>
+                <ButtonGroup fullWidth={true} sx={{ height: 40}} variant='outlined' size='large' aria-label="large button group">
+                    <Tooltip  title="apply" arrow>
+                        <Button 
+                            color='secondary'
+                            size="string" 
+                            type="button" 
+                            onClick={this.applyFilter}>
+                                Apply
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="Reset" arrow>
+                        <Button 
+                        color='secondary'
+                        size="string" 
+                        onClick={this.showOriginalFilter} 
+                        disabled={!changed}>Reset</Button>
+                    </Tooltip>
+                </ButtonGroup>
+            </FormControl>
+        </FormGroup>
 
-              <TextField labelId="mineffort" label="effortmin"size="small" value={effortMin} onChange={this.onChangeEffortMin}/>
-              {/* <input type="text" size={5} value={effortMin} onChange={this.onChangeEffortMin} /> */}
-              {'-'}
-              <TextField label="effortmax" size="small" value={effortMax} onChange={this.onChangeEffortMax}/>
-
-              {/* <input type="text" size={5} value={effortMax} onChange={this.onChangeEffortMax} /> */}
-              {' '}
-              <Tooltip  title="apply" arrow>
-                <Button 
-                    variant='contained' 
-                    size="large" 
-                    type="button" 
-                    onClick={this.applyFilter}>
-                        Apply
-                </Button>
-              </Tooltip>
-              
-              {' '}
-              <Tooltip title="Reset" arrow>
-                <Button 
-                variant='contained' 
-                size="large" 
-                onClick={this.showOriginalFilter} 
-                disabled={!changed}>Reset</Button>
-              </Tooltip>
-            </div>
         );
     }
 }
