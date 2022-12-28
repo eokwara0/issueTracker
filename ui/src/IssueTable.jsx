@@ -1,63 +1,70 @@
 
 import React from 'react';
-import {OverlayTrigger, Tooltip } from 'react-bootstrap';
+import {Navbar, OverlayTrigger, Table, Tooltip } from 'react-bootstrap';
 import { Link , NavLink , withRouter } from 'react-router-dom';
 import { AlternateEmail, CheckBox, Close, Delete, DeleteOutline, Edit } from '@mui/icons-material';
 import { Button } from '@mui/material';
 
-const IssueRow = withRouter(( { 
-    issue, 
-    location : { search },
-    closeIssue,
-    deleteIssue,
-    index,
-    }) => {
+const IssueRow = withRouter(( { issue, location : { search }, closeIssue, deleteIssue, index,}) => {
+
+
     const selectLocaiton = { pathname : `/issues/${issue.id}` , search };
+    const editTooltip = ( <Tooltip id="close-tooltip" placement='top' >Edit Issue</Tooltip> )
     const closeTooltip =( <Tooltip id="close-tooltip" placement="top" >Close Issue</Tooltip>);
     const deleteTooltip =( <Tooltip id="delete-tooltip" placement="top" >Delete Issue</Tooltip>);
-    return (
-            <tr>
-                <td>{issue.id}</td>
-                <td>{issue.status}</td>
-                <td>{issue.owner}</td>
-                <td>{issue.created.toDateString()}</td>
-                <td>{issue.effort}</td>
-                <td>{issue.due ? issue.due.toDateString() : ''}</td>
-                <td>{issue.title}</td>
-                <Link to={`/edit/${issue.id}`}><Edit/></Link>
-                    {'|'}
-                <NavLink to={selectLocaiton}>select</NavLink>
-                { '|  ' }
-                <OverlayTrigger delayShow={500} overlay={closeTooltip}>
-                    <Button variant="outlined" onClick={()=>{ closeIssue(index); }}>
-                        <Close/>
-                    </Button>
 
-                </OverlayTrigger>
-                {'  |  '}
-                <OverlayTrigger delayShow={500} overlay={deleteTooltip}>
-                    <Button variant="outlined" color='secondary'  onClick={() => { deleteIssue(index); }}>
-                        <DeleteOutline/>
-                    </Button>
-                </OverlayTrigger>
-             </tr>
-        )
+    function onClose(e){
+        e.preventDefault();
+        closeIssue(index);
+    }
+
+    function onDelete(e) {
+        e.preventDefault();
+        deleteIssue(index);
+    }
+
+
+    const tableRow = (
+            <tr>
+            <td>{issue.id}</td>
+            <td>{issue.status}</td>
+            <td>{issue.owner}</td>
+            <td>{issue.created.toDateString()}</td>
+            <td>{issue.effort}</td>
+            <td>{issue.due ? issue.due.toDateString() : ''}</td>
+            <td>{issue.title}</td>
+            <NavLink to={selectLocaiton}>select</NavLink>
+            {'|'}
+            <Link to={`/edit/${issue.id}`}><Edit/></Link>
+            {'|'}
+            <OverlayTrigger delayShow={500} overlay={closeTooltip}>
+                <Button variant="outlined" onClick={onClose}>
+                    <Close/>
+                </Button>
+            </OverlayTrigger>
+            {'  |  '}
+            <OverlayTrigger delayShow={500} overlay={deleteTooltip}>
+                <Button variant="outlined" color='secondary'  onClick={onDelete}>
+                    <DeleteOutline/>
+                </Button>
+            </OverlayTrigger>
+            </tr>
+        
+    )
+    return (
+            tableRow
+    )
 })
 
 
 export default function  IssueTable({ issues, closeIssue, deleteIssue }){
     const issueRows = issues.map(( issue, index ) => (
-        <IssueRow
-        key={issue.id}
-        issue={issue}
-        closeIssue={closeIssue}
-        deleteIssue={deleteIssue}
-        index={index}
-        />
+        <IssueRow key={issue.id} issue={issue} closeIssue={closeIssue} deleteIssue={deleteIssue} index={index} />
     ));
+
     return (
         <div className='table' style={{ padding: "10px"}}>
-            <table style={{borderCollapse: "collapse"}}>
+            <Table  striped bordered hover responsive="sm">
                 <thead>
                     <tr>
                         <th>ID</th><th>Status</th>
@@ -70,7 +77,7 @@ export default function  IssueTable({ issues, closeIssue, deleteIssue }){
                 <tbody>
                     {issueRows}
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
 }

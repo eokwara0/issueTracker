@@ -11,17 +11,57 @@ import graphQLFetch from "./graphQLFetch.js";
 import IssueDetail from './IssueDetail.jsx';
 import { Route } from 'react-router-dom';
 import { Panel } from 'react-bootstrap';
+import { Snackbar , Button, IconButton, Alert } from '@mui/material';
+import { Close } from '@mui/icons-material';
 
+
+function SnackBar(props) {
+
+  function handleClose() {
+    props.closeAlert();
+  }
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <Close fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
+  return (
+    <Snackbar
+      open={props.alert.open}
+      autoHideDuration={6000}
+      onClose={handleClose}
+    >
+        <Alert color={props.alert.color} sx={{ fontSize: '1.3rem'}} onClose={handleClose} >{props.alert.message}<strong>Check it out!</strong> </Alert>
+    </Snackbar>
+  );
+}
 
 export default class IssueList extends React.Component{
     constructor(props){
 
         super(props);
-        this.state = {issues : []};
+        this.state = {
+            issues : [],
+            alert: {
+                color : 'info',
+                message : "",
+                open : false,
+            }
+        };
 
         this.createIssue = this.createIssue.bind(this);
         this.closeIssue = this.closeIssue.bind(this);
         this.deleteIssue = this.deleteIssue.bind(this);
+        this.closeAlert = this.closeAlert.bind(this);
     }
 
     componentDidMount() {
@@ -33,6 +73,10 @@ export default class IssueList extends React.Component{
         if ( prevSearch !== search ){
             this.loadData();
         }
+    }
+
+    closeAlert(){
+        this.setState({ alert : { open : false }});
     }
 
     async loadData() {
@@ -76,6 +120,7 @@ export default class IssueList extends React.Component{
         const data = await graphQLFetch( query , { issue });
         if (data){
             this.loadData();
+            this.setState({ alert : { color : 'success' , message : 'Issue Has been Loaded Ⓜ️' , open: true }})
         }
     }
 
@@ -97,6 +142,13 @@ export default class IssueList extends React.Component{
                 newList[index] = data.issueUpdate;
                 return { issues : newList };
             })
+            this.setState({
+              alert: {
+                color: "info",
+                message: "Issue has been closed 🚀👻",
+                open: true,
+              },
+            });
         }else{
             this.loadData();
         }
@@ -119,8 +171,24 @@ export default class IssueList extends React.Component{
                 newList.splice(index,1);
                 return { issues: newList }
             });
+
+            this.setState({
+              alert: {
+                color: "success",
+                message: "Issue has been deleted 🚀👻",
+                open: true,
+              },
+            });
+        
         }else {
             this.loadData();
+            this.setState({
+              alert: {
+                color: "error",
+                message: "An Error occured while deleting the issue 🚀👻",
+                open: true,
+              },
+            });
         }
     }
     
@@ -128,6 +196,7 @@ export default class IssueList extends React.Component{
     render(){
         const { issues } = this.state;
         const { match }  = this.props ;
+        const { alert } = this.state;
         return (
             <React.Fragment>
                 <Panel>
@@ -140,11 +209,11 @@ export default class IssueList extends React.Component{
                 </Panel>
                 <hr/>
                 <IssueTable issues={issues} closeIssue={this.closeIssue} deleteIssue={this.deleteIssue}/>
-                <hr/>
                 <IssueAdd createIssue={this.createIssue}/>
-                <hr/>
                 <Route path={`${match.path}/:id`} component={IssueDetail}/>
+                <SnackBar alert={alert} closeAlert={this.closeAlert}/>
             </React.Fragment>
         );
     }
 }
+
