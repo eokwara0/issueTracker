@@ -3,6 +3,7 @@ import Contents from "./contents.jsx";
 import { Navbar, Nav, NavItem, OverlayTrigger, Glyphicon } from "react-bootstrap";
 import { Stack } from "@mui/material";
 import { Tooltip , NavDropdown, MenuItem , Grid } from "react-bootstrap";
+import { CssBaseline } from "@mui/material";
 
 
 function NavBar(){
@@ -46,12 +47,12 @@ function Footer() {
 
 export default function Page(){
     return (
-        <div>
-            <NavBar/>
-            <Grid fluid>
-                <Contents/>
-            </Grid>
-            <Footer/>
-        </div>
-    )
+      <React.Fragment>
+        <NavBar />
+        <Grid fluid>
+          <Contents />
+        </Grid>
+        <Footer />
+      </React.Fragment>
+    );
 }

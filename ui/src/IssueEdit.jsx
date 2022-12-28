@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import graphQLFetch from "./graphQLFetch.js";
 import NumInput from "./NumInput.jsx";
@@ -7,7 +6,7 @@ import DateInput from "./DateInput.jsx";
 import TextInput from "./TextInput.jsx";
 import {
  Col, Panel, Form, FormGroup, FormControl, ControlLabel,
- ButtonToolbar, Button,
+ ButtonToolbar, Button,Alert
 } from 'react-bootstrap';
 
 
@@ -18,11 +17,13 @@ export default class IssueEdit extends React.Component {
         this.state ={
             issue : {},
             invalidFields:{},
+			showingValidation: false,
             };
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onValidityChange = this.onValidityChange.bind(this);
         this.handleStatus = this.handleStatus.bind(this);
+		this.showingValidation = this.showingValidation.bind(this);
 
     }
 
@@ -61,6 +62,7 @@ export default class IssueEdit extends React.Component {
 
     async handleSubmit(e){
         e.preventDefault();
+		this.showingValidation();
         const { issue, invalidFields } = this.state;
         if (Object.keys(invalidFields).length !== 0) return;
 
@@ -96,6 +98,14 @@ export default class IssueEdit extends React.Component {
         const data = await graphQLFetch( query , { id });
         this.setState({ issue : data ? data.issue : {} , invalidFields : {} });
     }
+
+	showingValidation(){
+		this.setState({ showingValidation : true});
+	}
+
+	dismissValidation(){
+		this.setState({ showingValidation : false });
+	}
     render(){
         const { issue } = this.state;
         const { match : { params : { id : propsId } } } = this.props;
@@ -108,19 +118,19 @@ export default class IssueEdit extends React.Component {
             return null;
         }
 
-        const { invalidFields } = this.state;
+        const { invalidFields , showingValidation } = this.state;
         let validationMessage;
 
-        if (Object.keys(invalidFields).length !== 0){
+        if (Object.keys(invalidFields).length !== 0 && showingValidation){
             validationMessage = (
-                <div className="error">
-                    Please correct invalid fields before submitting
-                </div>
-            )
+              <Alert bsStyle="danger" onDismiss={this.dismissValidation}>
+                Please correct invalid fields before submitting
+            </Alert>
+            );
         }
 
         return (
-          <Panel >
+          <Panel>
             <Panel.Heading>
               <Panel.Title toggle={true}>{`Editing issue: ${id}`}</Panel.Title>
             </Panel.Heading>
@@ -243,7 +253,9 @@ export default class IssueEdit extends React.Component {
                   </Col>
                 </FormGroup>
               </Form>
-              {validationMessage}
+              <FormGroup>
+                <Col smOffset={3} sm={9}>{validationMessage}</Col>
+              </FormGroup>
             </Panel.Body>
             <Panel.Footer>
               <Link to={`/edit/${id - 1}`}>Prev</Link>

@@ -11,39 +11,10 @@ import graphQLFetch from "./graphQLFetch.js";
 import IssueDetail from './IssueDetail.jsx';
 import { Route } from 'react-router-dom';
 import { Panel } from 'react-bootstrap';
-import { Snackbar , Button, IconButton, Alert } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import SnackBar from './snackBar.jsx';
 
 
-function SnackBar(props) {
 
-  function handleClose() {
-    props.closeAlert();
-  }
-
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <Close fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
-
-  return (
-    <Snackbar
-      open={props.alert.open}
-      autoHideDuration={6000}
-      onClose={handleClose}
-    >
-        <Alert color={props.alert.color} sx={{ fontSize: '1.3rem'}} onClose={handleClose} >{props.alert.message}<strong>Check it out!</strong> </Alert>
-    </Snackbar>
-  );
-}
 
 export default class IssueList extends React.Component{
     constructor(props){
@@ -62,6 +33,7 @@ export default class IssueList extends React.Component{
         this.closeIssue = this.closeIssue.bind(this);
         this.deleteIssue = this.deleteIssue.bind(this);
         this.closeAlert = this.closeAlert.bind(this);
+        this.showSnack = this.showSnack.bind(this);
     }
 
     componentDidMount() {
@@ -77,6 +49,17 @@ export default class IssueList extends React.Component{
 
     closeAlert(){
         this.setState({ alert : { open : false }});
+    }
+
+    showSnack( message = '', color = 'info' , open = false ){
+            this.setState({
+              alert: {
+                color: color,
+                message: message,
+                open: open,
+              },
+            });
+
     }
 
     async loadData() {
@@ -104,7 +87,7 @@ export default class IssueList extends React.Component{
                 created effort due
             }
         }`;
-        const data = await graphQLFetch(query , vars );
+        const data = await graphQLFetch(query , vars , this.showSnack);
         if(data){
             this.setState({issues: data.issueList});
         }
@@ -117,10 +100,10 @@ export default class IssueList extends React.Component{
             }
         }`;
 
-        const data = await graphQLFetch( query , { issue });
+        const data = await graphQLFetch( query , { issue }, this.showSnack);
         if (data){
             this.loadData();
-            this.setState({ alert : { color : 'success' , message : 'Issue Has been Loaded Ⓜ️' , open: true }})
+            this.showSnack("Issue Has been Loaded Ⓜ️", "success", true);
         }
     }
 
@@ -134,7 +117,7 @@ export default class IssueList extends React.Component{
         }`;
         const changes = { status : "Closed"};
         const { issues } = this.state;
-        const data = await graphQLFetch( query , { id : issues[index].id , changes : changes });
+        const data = await graphQLFetch( query , { id : issues[index].id , changes : changes }, this.showSnack);
 
         if (data){
             this.setState(( prevState) => {
@@ -142,13 +125,7 @@ export default class IssueList extends React.Component{
                 newList[index] = data.issueUpdate;
                 return { issues : newList };
             })
-            this.setState({
-              alert: {
-                color: "info",
-                message: "Issue has been closed 🚀👻",
-                open: true,
-              },
-            });
+            this.showSnack("Issue has been closed 🚀👻", "info", true);
         }else{
             this.loadData();
         }
@@ -158,10 +135,12 @@ export default class IssueList extends React.Component{
         const query = `mutation issueDelete($id:Int!){
             issueDelete(id: $id)
         }`;
+
+
         const { issues } = this.state;
         const { location : { pathname , search } , history } = this.props;
         const { id } = issues[index];
-        const data = await graphQLFetch( query , { id } );
+        const data = await graphQLFetch( query , { id }, this.showSnack );
         if (data && data.issueDelete){
             this.setState( prevState => {
                 const newList = [...prevState.issues ];
@@ -171,24 +150,16 @@ export default class IssueList extends React.Component{
                 newList.splice(index,1);
                 return { issues: newList }
             });
-
-            this.setState({
-              alert: {
-                color: "success",
-                message: "Issue has been deleted 🚀👻",
-                open: true,
-              },
-            });
+            this.showSnack("Issue has been deleted 🚀👻", "success", true);
         
         }else {
             this.loadData();
-            this.setState({
-              alert: {
-                color: "error",
-                message: "An Error occured while deleting the issue 🚀👻",
-                open: true,
-              },
-            });
+
+            this.showSnack(
+              "An Error occured while deleting the issue 🚀👻",
+              "error",
+              true
+            );
         }
     }
     
