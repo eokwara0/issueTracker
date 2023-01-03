@@ -4,7 +4,6 @@
 /* eslint "react/jsx-no-undef": "off" */
 import React from 'react';
 import URLSearchParams from 'url-search-params';
-import IssueAdd from './IssueAdd.jsx';
 import IssueTable from './IssueTable.jsx';
 import IssueFilter from './IssueFilter.jsx';
 import graphQLFetch from "./graphQLFetch.js";
@@ -29,7 +28,6 @@ export default class IssueList extends React.Component{
             }
         };
 
-        this.createIssue = this.createIssue.bind(this);
         this.closeIssue = this.closeIssue.bind(this);
         this.deleteIssue = this.deleteIssue.bind(this);
         this.closeAlert = this.closeAlert.bind(this);
@@ -92,20 +90,7 @@ export default class IssueList extends React.Component{
             this.setState({issues: data.issueList});
         }
     }
-    async createIssue(issue) {
 
-        const query =  `mutation issueAdd($issue:IssueInputs!){
-            issueAdd(issue: $issue){
-                id
-            }
-        }`;
-
-        const data = await graphQLFetch( query , { issue }, this.showSnack);
-        if (data){
-            this.loadData();
-            this.showSnack("Issue Has been Loaded Ⓜ️", "success", true);
-        }
-    }
 
     async closeIssue(index){
 
@@ -180,7 +165,6 @@ export default class IssueList extends React.Component{
                 </Panel>
                 <hr/>
                 <IssueTable issues={issues} closeIssue={this.closeIssue} deleteIssue={this.deleteIssue}/>
-                <IssueAdd createIssue={this.createIssue}/>
                 <Route path={`${match.path}/:id`} component={IssueDetail}/>
                 <SnackBar alert={alert} closeAlert={this.closeAlert}/>
             </React.Fragment>
