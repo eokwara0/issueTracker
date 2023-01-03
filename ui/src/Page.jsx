@@ -4,6 +4,7 @@ import { Navbar, Nav, NavItem, OverlayTrigger, Glyphicon } from "react-bootstrap
 import { Stack } from "@mui/material";
 import { Tooltip , NavDropdown, MenuItem , Grid } from "react-bootstrap";
 import { CssBaseline } from "@mui/material";
+import IssueAddNavItem from "./IssueAddNavItem.jsx";
 
 
 function NavBar(){
@@ -20,9 +21,10 @@ function NavBar(){
                 </Stack>
             </Nav>
             <Nav pullRight>
-                <NavItem>
+                {/* <NavItem>
                     <OverlayTrigger placement="bottom" delayShow={1000} overlay={ <Tooltip id="create-issue">Create Issue</Tooltip>}><Glyphicon glyph="plus"/></OverlayTrigger>
-                </NavItem>
+                </NavItem> */}
+                <IssueAddNavItem/>
                 <NavDropdown id="user-dropdown" title={<Glyphicon glyph="option-vertical" />} noCaret>
                     <MenuItem>About</MenuItem>
                 </NavDropdown>
