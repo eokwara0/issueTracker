@@ -25,32 +25,33 @@ const IssueRow = withRouter(( { issue, location : { search }, closeIssue, delete
 
 
     const tableRow = (
-            <tr>
-            <td>{issue.id}</td>
-            <td>{issue.status}</td>
-            <td>{issue.owner}</td>
-            <td>{issue.created.toDateString()}</td>
-            <td>{issue.effort}</td>
-            <td>{issue.due ? issue.due.toDateString() : ''}</td>
-            <td>{issue.title}</td>
-            <NavLink to={selectLocaiton}>select</NavLink>
-            {'|'}
-            <Link to={`/edit/${issue.id}`}><Edit/></Link>
-            {'|'}
-            <OverlayTrigger delayShow={500} overlay={closeTooltip}>
-                <Button variant="outlined" onClick={onClose}>
-                    <Close/>
-                </Button>
-            </OverlayTrigger>
-            {'  |  '}
-            <OverlayTrigger delayShow={500} overlay={deleteTooltip}>
-                <Button variant="outlined" color='secondary'  onClick={onDelete}>
-                    <DeleteOutline/>
-                </Button>
-            </OverlayTrigger>
-            </tr>
-        
-    )
+      <tr>
+        <td>{issue.id}</td>
+        <td>{issue.status}</td>
+        <td>{issue.owner}</td>
+        <td>{issue.created.toDateString()}</td>
+        <td>{issue.effort}</td>
+        <td>{issue.due ? issue.due.toDateString() : ""}</td>
+        <td>{issue.title}</td>
+        <NavLink to={selectLocaiton}>select</NavLink>
+        {"|"}
+        <Link to={`/edit/${issue.id}`}>
+          <Edit />
+        </Link>
+        {"|   "}
+        <OverlayTrigger delayShow={500} overlay={closeTooltip}>
+          <Button variant="outlined" onClick={onClose}>
+            <Close />
+          </Button>
+        </OverlayTrigger>
+        {"   |    "}
+        <OverlayTrigger delayShow={500} overlay={deleteTooltip}>
+          <Button variant="outlined" color="secondary" onClick={onDelete}>
+            <DeleteOutline />
+          </Button>
+        </OverlayTrigger>
+      </tr>
+    );
     return (
             tableRow
     )
