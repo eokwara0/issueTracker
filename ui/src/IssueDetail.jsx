@@ -75,6 +75,7 @@ export default class IssueDetail extends React.Component {
     const { alert } = this.state;
     return (
       <div>
+        {/**This is something that happens */}
         <h2>Description</h2>
         <pre>{description}</pre>
         <SnackBar alert={alert} closeAlert={this.closeAlert}/>
