@@ -1,6 +1,7 @@
 
 version: "3.9"
 
+# services declaration 
 services:
   mongodb:
     container_name: mongodatabase
@@ -14,7 +15,8 @@ services:
     networks:
       - front-end
 
-
+# api container
+# exposes ports for api container to host system
   api:
     container_name: apiv1
     build: ./api/
@@ -32,7 +34,7 @@ services:
     networks:
       - front-end 
 
-
+#ui server configuration 
   uiserver:
     container_name: uiserver
     build: ./ui/
