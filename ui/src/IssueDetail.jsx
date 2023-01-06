@@ -4,11 +4,16 @@ import graphQLFetch from './graphQLFetch.js';
 import SnackBar from './snackBar.jsx';
 
 
+
+/** Issue detail Component */
 export default class IssueDetail extends React.Component {
+  /** class constructor */
   constructor(props) {
     super(props);
     this.state = {
+      /** issue object  */
       issue: {},
+      /** alert object for snackBar #SnackBar */
       alert: {
         open: false,
         message: "",
@@ -16,14 +21,22 @@ export default class IssueDetail extends React.Component {
       },
     };
 
+    /** Binding function/methods to the component */
+    /** Data binding */
     this.closeAlert = this.closeAlert.bind(this);
     this.showSnack = this.showSnack.bind(this);
   }
 
+  /** sets the SnackBar state to false */
+  /** causing it to close */
   closeAlert() {
     this.setState({ alert: { open: false } });
   }
 
+  /** Displays the SnackBar along with your message and color profile
+   * color  = [error, success, info]
+   * open   = [true, false].🐫
+   */
   showSnack(color = "error", message = "", open = false) {
     this.setState({ alert: { color: color, message: message, open: open } });
   }
