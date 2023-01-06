@@ -41,10 +41,16 @@ export default class IssueDetail extends React.Component {
     this.setState({ alert: { color: color, message: message, open: open } });
   }
 
+  /** Mounts the component on to the browser */
   componentDidMount() {
     this.loadData();
   }
 
+  /** @executes when the component or the overall page changes
+   * this method has access to its previous state
+   * the value is stored within the @prevProps variable
+   * client @route parameters are stored within the @match variable
+   */
   componentDidUpdate(prevProps) {
     const {
       match: {
@@ -62,19 +68,32 @@ export default class IssueDetail extends React.Component {
     }
   }
 
+
+  /**
+   * Retrieves @issue based on it's @id
+   * and renders the @description of the issue
+   * onto the browser
+   */
   async loadData() {
     const {
       match: {
-        params: { id },
+        params: { id }, // retrieving id
       },
     } = this.props;
+
+    /** graphQL query */
     const query = ` query issue($id : Int!){
             issue (id : $id){
                 id description
             }
         }`;
+      
+    /**🐫 executing @query  and retrieving data*/
     const data = await graphQLFetch(query, { id } , this.showSnack);
+
+    /**👻 validate if @data is available */
     if (data) {
+      /** 👻setstate if valid */
       this.setState({ issue: data.issue });
     } else {
       this.setState({ issue: {} });
@@ -83,12 +102,13 @@ export default class IssueDetail extends React.Component {
   render() {
 
     const {
+      /**🐔retrieve issue description */
       issue: { description },
     } = this.state;
     const { alert } = this.state;
     return (
       <div>
-        {/**This is something that happens */}
+        {/** Displays the issue */}
         <h2>Description</h2>
         <pre>{description}</pre>
         <SnackBar alert={alert} closeAlert={this.closeAlert}/>
