@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 
 
+
+/** 🐔 validates if data is null and returns the appropriate value */
 function displayFormat(date) {
   return (date !== null) ? new Date(date).toDateString() : '';
 }
 
+/** 🧪 edits the format of the date */
 function editFormat(date) {
   return (date !== null) ? new Date(date).toDateString().substr(0, 10) : '';
 }
 
+/** 🐫converts string into a Date Object */
 function unformat(str) {
   const val = new Date(str);
   return Number.isNaN(val.getTime()) ? null : val;
 }
 
+/** 🚀Date Component */
 export default class DateInput extends React.Component {
   constructor(props) {
     super(props);
@@ -27,10 +32,12 @@ export default class DateInput extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
+  /** 🤔Handles the event upon input focus */
   onFocus() {
     this.setState({ focused: true });
   }
 
+/** 🤑 Handles the event onBlur*/ 
   onBlur(event) {
     const { value, valid : oldValid } = this.state;
     const { onValidityChange, onChange } = this.props;

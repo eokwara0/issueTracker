@@ -4,13 +4,18 @@ import PropTypes from 'prop-types';
 import { Button, ControlLabel, Form, FormControl, FormGroup } from 'react-bootstrap';
 
 
-
+/** 
+ * Issue Add component
+ * A form for adding new issues
+ *  */
 export default class IssueAdd extends React.Component{
     
     constructor(){
         super();
+        // method binding
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+    /** handles button submit */
     handleSubmit(e){
         e.preventDefault();
         const form = document.forms.issueAdd;
@@ -22,6 +27,7 @@ export default class IssueAdd extends React.Component{
         form.owner.value = "";form.title.value="";
 
     }
+
     render(){
         return (
             <Form inline name="issueAdd" onSubmit={this.handleSubmit}>
