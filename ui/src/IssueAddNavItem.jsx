@@ -18,6 +18,11 @@ import Toast from "./Toast.jsx";
 import SnackBar from './snackBar.jsx';
 
 
+/** 
+ * 🚀🐼 @IssueAddNavItem
+ * This is the issue add component used 
+ * for adding issues to the database
+ */
 class IssueAddNavItem extends React.Component {
   constructor(props) {
     super(props);
@@ -39,21 +44,24 @@ class IssueAddNavItem extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+   /**🧪 Handles changes that occur within the component */
     handleChange(e){
         let name = e.target.name;
         let ss = this.state
         ss[name] = e.target.value;
         this.setState({ ss })
     }
-
+  /** 🐫sets the display modal to true */
   showModal() {
     this.setState({ showing: true });
   }
 
+  /** ⭕Hides modal */
   hideModal() {
     this.setState({ showing: false });
   }
 
+  /** 🅰️Displays error message */
   showError(message) {
     this.setState({
       open: true,
@@ -62,6 +70,7 @@ class IssueAddNavItem extends React.Component {
     });
   }
 
+  /** 👾 displays snackbar on the ui */
   showSnack(message,color,open){
     this.setState({
         open : open,
@@ -70,6 +79,7 @@ class IssueAddNavItem extends React.Component {
     });
   }
 
+  /** 👾 dismisses toast */
   dismissToast() {
     this.setState({ open: false });
   }
