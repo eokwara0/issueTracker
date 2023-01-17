@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom/client'
 import 'babel-polyfill';
 import 'whatwg-fetch';
 import { BrowserRouter as Router  } from 'react-router-dom';
-import Page from '../src/Page.jsx';
+import Page from './Page.jsx';
 
 const element = (
     <Router>
