@@ -84,6 +84,12 @@ class IssueAddNavItem extends React.Component {
     this.setState({ open: false });
   }
 
+
+  /**
+   * 👾HandleSubmit function
+   * retrieves issue data and 
+   * makes a post request to add the issue
+   */
   async handleSubmit(e) {
 
     e.preventDefault();
