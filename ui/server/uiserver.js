@@ -1,12 +1,17 @@
+/* eslint-disable global-require */
 require('dotenv').config();
+
+// path object
 const path = require('path');
+
+// Creating an express Object
+const express = require('express');
+// Render function
+const render = require('./render.js');
+
 
 // port number
 const port = process.env.UI_SERVER_PORT || 8000;
-
-// express object
-// Creating an express Object
-const express = require('express');
 
 
 // express application
@@ -61,10 +66,15 @@ app.get('/env.js', (req, res) => {
   res.send(`window.ENV = ${JSON.stringify(env)})`);
 });
 
+/** 🚀About component endpoint
+ * The reason for this is that we want to render the component on the server rather than on the client side.
+ * When ever a page is reloaded or refreshed.
+ */
+app.get('/about', render);
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('public/index.html'));
 });
-
 
 // Starting up the server
 // Listening in on specified port
