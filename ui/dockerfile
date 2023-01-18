@@ -5,4 +5,4 @@ RUN npm install -y
 COPY . .
 EXPOSE 4040
 VOLUME ["/home/emmanuel/app" , "/app"]
-CMD [ "node"  , "./uiserver.js" ]
+CMD [ "node"  , "./server/uiserver.js" ]
