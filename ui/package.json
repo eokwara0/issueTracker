@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "#start": "script UI server. HMR is enabled in dev mode",
-    "start": "node server/uiserver.js",
+    "start": "node dist/server.js",
     "#dev": " script runs nodemon",
-    "dev": "nodemon -w server -w .env server/uiserver.js",
+    "dev": "nodemon -w dist -w .env dist/server.js",
     "#compile": " compiles jsx code into js code",
     "compile": "webpack --mode production",
     "#watch": "compile , and recompile on any changes",
     "watch": "webpack --watch",
     "#lint": "Runs ESlint on all relevant files",
-    "lint": "npx eslint . --ext js,jsx --ignore-pattern public",
+    "lint": "eslint server src browser --ext js,jsx",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -44,17 +44,18 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^4.3.1",
     "url-search-params": "^1.1.0",
-    "whatwg-fetch": "^3.6.2",
-      "webpack": "^5.75.0",
+    "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-middleware": "^3.7.3",
-    "webpack-hot-middleware": "^2.25.3"
+    "webpack-hot-middleware": "^2.25.3",
+    "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",
     "@babel/core": "^7.17.12",
     "@babel/preset-env": "^7.17.12",
     "@babel/preset-react": "^7.17.12",
+    "@types/dotenv": "^8.2.0",
     "babel-loader": "^8.3.0",
     "css-loader": "^6.7.3",
     "eslint": "^5.16.0",
@@ -62,6 +63,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.11",
-    "style-loader": "^3.3.1"
+    "style-loader": "^3.3.1",
+    "webpack-node-externals": "^1.7.2"
   }
 }

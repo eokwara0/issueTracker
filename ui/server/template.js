@@ -1,6 +1,6 @@
 
 
-function template(body) {
+export default function template(body) {
   return `
     "<!DOCTYPE HTML>
             <html>
@@ -20,5 +20,3 @@ function template(body) {
                 </body>
             </html>`;
 }
-
-module.exports = template;

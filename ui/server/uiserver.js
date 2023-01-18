@@ -1,21 +1,25 @@
 /* eslint-disable global-require */
-require('dotenv').config();
+import dotenv from 'dotenv';
+import path from 'path';
+import express from 'express';
+// import proxy from 'http-proxy-middleware';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import SourceMapSupport from 'source-map-support';
+// eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
+import render from './render.jsx';
 
-// path object
-const path = require('path');
 
-// Creating an express Object
-const express = require('express');
-// Render function
-const render = require('./render.js');
+// express application
+const app = express();
+
+
+SourceMapSupport.install();
+dotenv.config();
 
 
 // port number
 const port = process.env.UI_SERVER_PORT || 8000;
 
-
-// express application
-const app = express();
 
 // Enabling hot module replacement
 const enableHMR = (process.env.ENABLE_HMR || 'true') === 'true';
@@ -26,7 +30,7 @@ if (enableHMR && (process.env.NODE_ENV !== 'production')) {
   const devMiddleware = require('webpack-dev-middleware');
   const hotMiddleware = require('webpack-hot-middleware');
 
-  const config = require('../webpack.config.js');
+  const config = require('../webpack.config.js')[0];
   config.entry.app.push('webpack-hot-middleware/client');
   config.plugins = config.plugins || [];
   config.plugins.push(new webpack.HotModuleReplacementPlugin());
