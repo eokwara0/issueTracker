@@ -1,8 +1,21 @@
 FROM node:latest
+# Working tree
 WORKDIR /app
+
+# copying package.json file
 COPY ["package.json" , "package-lock.json","./"]
+
+# installing packages
 RUN npm install -y
+
+# copying file system to working directory
 COPY . .
-EXPOSE 4040
+
+# compiling packages
+RUN npm run compile
+
+# EXPOSE 4040
+# Attaching volume
 VOLUME ["/home/emmanuel/app" , "/app"]
-CMD [ "node"  , "./server/uiserver.js" ]
+# running main server
+CMD [ "node"  , "./main/server.js" ]

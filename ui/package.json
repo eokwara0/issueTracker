@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "#start": "script UI server. HMR is enabled in dev mode",
-    "start": "node dist/server.js",
+    "start": "node main/server.js",
     "#dev": " script runs nodemon",
-    "dev": "nodemon -w dist -w .env dist/server.js",
+    "dev": "nodemon -w main -w .env main/server.js",
     "#compile": " compiles jsx code into js code",
     "compile": "webpack --mode production",
     "#watch": "compile , and recompile on any changes",
