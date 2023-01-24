@@ -115,9 +115,11 @@ clean_docker(){
 ## cleaing native environment variables 
 clean_native(){
 
+    # stops the docker container running
     docker stop ${DOCKER_CONTAINER}
     if  [ $? -eq 0 ];
     then
+        #  removes the image
         docker rmi mongodb:latest
         if [ $? -eq 0 ];
         then
