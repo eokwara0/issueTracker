@@ -51,7 +51,7 @@ native(){
     fi
 
     # starting ui server 
-
+    # Adding another comment
     cd ui
     if [ $? -eq 0 ];
     then
