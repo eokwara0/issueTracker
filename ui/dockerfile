@@ -8,6 +8,7 @@ COPY ["package.json" , "package-lock.json","./"]
 # installing packages
 RUN npm install -y
 
+# copying current working directory to the container
 # copying file system to working directory
 COPY . .
 
