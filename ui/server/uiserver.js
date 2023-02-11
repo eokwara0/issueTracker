@@ -73,6 +73,7 @@ app.get('/env.js', (req, res) => {
 /** 🚀About component endpoint
  * The reason for this is that we want to render the component on the server rather than on the client side.
  * When ever a page is reloaded or refreshed.
+ * 
  */
 app.get('/about', render);
 
