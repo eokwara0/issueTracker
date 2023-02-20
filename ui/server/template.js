@@ -1,5 +1,11 @@
 
 
+/**
+ * this method takes a string component and adds it to it's body 
+ * and returns a full html page
+ * @param {component rendered into a string } body 
+ * @returns 
+ */
 export default function template(body) {
   return `
     "<!DOCTYPE HTML>
