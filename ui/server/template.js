@@ -7,6 +7,8 @@
  * @returns 
  */
 export default function template(body) {
+
+    // return statement
   return `
     "<!DOCTYPE HTML>
             <html>
